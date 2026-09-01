@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="R&S Wedding" />
+<title>Rohit & Sivani — Wedding Attire</title>
+<style>
+  @font-face {
+    font-family: 'Fraunces-fallback';
+    src: local('Georgia');
+  }
+
+  :root{
+    --cream: #FBF3E7;
+    --cream-2: #F5E9D6;
+    --ink: #2B2018;
+    --ink-soft: #6b5c4c;
+    --marigold: #C97A2B;
+    --marigold-deep: #A8611D;
+    --maroon: #7A1F2B;
+    --maroon-deep: #5c1620;
+    --teal: #1F5D5B;
+    --teal-deep: #164543;
+    --gold-line: #C9A05B;
+    --card-bg: #FFFDF9;
+    --shadow: 0 1px 0 rgba(43,32,24,0.06);
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: -apple-system, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: contain;
+  }
+
+  .display {
+    font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+  }
+
+  #app {
+    max-width: 560px;
+    margin: 0 auto;
+    padding-bottom: 90px;
+    min-height: 100vh;
+  }
+
+  /* ---------- TAB BAR ---------- */
+  .tab-bar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    max-width: 560px;
+    margin: 0 auto;
+    display: flex;
+    background: rgba(251,243,231,0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(43,32,24,0.1);
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+    z-index: 40;
+  }
+  .tab-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    padding: 6px 4px;
+    color: var(--ink-soft);
+    font-family: inherit;
+  }
+  .tab-btn svg { width: 22px; height: 22px; }
+  .tab-btn .tab-label { font-size: 10.5px; font-weight: 600; letter-spacing: .01em; }
+  .tab-btn.active { color: var(--maroon); }
+  .tab-btn.active svg { color: var(--maroon); }
+
+  /* ---------- HEADER ---------- */
+  header {
+    position: relative;
+    padding: 34px 24px 26px;
+    background:
+      radial-gradient(ellipse at top left, rgba(201,122,43,0.16), transparent 55%),
+      radial-gradient(ellipse at bottom right, rgba(122,31,43,0.12), transparent 60%),
+      var(--cream);
+    border-bottom: 1px solid var(--gold-line);
+    overflow: hidden;
+  }
+  header::before{
+    content:'';
+    position:absolute; left:0; right:0; bottom:-1px; height:6px;
+    background: repeating-linear-gradient(90deg, var(--marigold) 0 10px, var(--maroon) 10px 20px, var(--teal) 20px 30px);
+    opacity:.55;
+  }
+  .kicker-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 6px;
+  }
+  .kicker {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    color: var(--maroon);
+    margin: 0;
+    font-weight: 600;
+  }
+  .rename-btn {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(122,31,43,0.08);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--maroon);
+    flex-shrink: 0;
+    opacity: 0.75;
+  }
+  .rename-btn svg { width: 12px; height: 12px; }
+  .rename-btn:active { opacity: 1; background: rgba(122,31,43,0.16); }
+  h1.title {
+    font-size: 30px;
+    line-height: 1.15;
+    margin: 0 0 6px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  h1.title em { color: var(--marigold-deep); font-style: normal; }
+  .subtitle {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .progress-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 18px;
+  }
+  .progress-chip {
+    flex: 1;
+    text-align: center;
+    background: var(--card-bg);
+    border: 1px solid rgba(43,32,24,0.08);
+    border-radius: 10px;
+    padding: 8px 4px;
+  }
+  .progress-chip .num { font-size: 17px; font-weight: 700; color: var(--maroon); display:block; font-family: Georgia, serif;}
+  .progress-chip .lbl { font-size: 10px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .03em; }
+
+  /* ---------- SECTION NAV ---------- */
+  .section-pad { padding: 22px 20px 4px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .section-head h2 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--ink-soft);
+    margin: 0;
+    font-weight: 600;
+  }
+  .add-link {
+    font-size: 13px;
+    color: var(--teal);
+    background: none;
+    border: none;
+    font-weight: 600;
+    padding: 4px 2px;
+  }
+
+  /* ---------- EVENT CARDS ---------- */
+  .events-list { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
+
+  .event-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid rgba(43,32,24,0.08);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border-left: 5px solid var(--accent, var(--marigold));
+  }
+
+  .event-header {
+    padding: 16px 16px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+  }
+
+  .event-date-block {
+    min-width: 42px;
+    text-align: center;
+  }
+  .event-date-block .d { font-family: Georgia, serif; font-size: 19px; font-weight: 700; color: var(--accent, var(--marigold-deep)); line-height:1;}
+  .event-date-block .m { font-size: 9.5px; text-transform: uppercase; color: var(--ink-soft); letter-spacing: .04em; }
+
+  .event-title-wrap { flex: 1; min-width: 0; }
+  .event-title {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    margin: 0 0 3px;
+    color: var(--ink);
+  }
+  .event-meta {
+    font-size: 12px;
+    color: var(--ink-soft);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .mini-progress {
+    display: inline-flex;
+    gap: 3px;
+  }
+  .mini-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(43,32,24,0.15);
+  }
+  .mini-dot.on { background: var(--accent, var(--marigold)); }
+
+  .chevron {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+    color: var(--ink-soft);
+    transition: transform .25s ease;
+  }
+  .event-card.open .chevron { transform: rotate(180deg); }
+
+  .event-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease;
+  }
+  .event-card.open .event-body { max-height: 3000px; }
+
+  .event-body-inner {
+    padding: 0 16px 16px;
+    border-top: 1px dashed rgba(43,32,24,0.12);
+    padding-top: 12px;
+  }
+
+  .event-notes {
+    width: 100%;
+    border: 1px solid rgba(43,32,24,0.12);
+    background: var(--cream-2);
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--ink);
+    margin-bottom: 12px;
+    font-family: inherit;
+    resize: none;
+  }
+  .event-notes::placeholder{ color: var(--ink-soft); }
+
+  /* ---------- PERSON ROWS ---------- */
+  .person-row {
+    background: var(--cream-2);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  .person-row-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .person-avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent, var(--marigold));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    font-family: Georgia, serif;
+    flex-shrink: 0;
+  }
+  .person-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    flex: 1;
+  }
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .field-grid.jewelry-grid { grid-template-columns: 1fr; }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .field label {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .field input {
+    border: 1px solid rgba(43,32,24,0.12);
+    background: #fff;
+    border-radius: 8px;
+    padding: 7px 9px;
+    font-size: 13.5px;
+    color: var(--ink);
+    font-family: inherit;
+    width: 100%;
+  }
+  .field input::placeholder { color: #b8ac9c; }
+  .field input:focus, .event-notes:focus {
+    outline: none;
+    border-color: var(--accent, var(--marigold));
+    box-shadow: 0 0 0 2px rgba(201,122,43,0.12);
+  }
+
+  .color-swatch-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .color-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(43,32,24,0.15);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .remove-person-btn {
+    background: none; border: none;
+    color: var(--maroon);
+    font-size: 11px;
+    padding: 2px 4px;
+    opacity: 0.55;
+  }
+
+  .add-person-btn {
+    width: 100%;
+    text-align: center;
+    background: none;
+    border: 1px dashed rgba(43,32,24,0.2);
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .event-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+  }
+  .delete-event-btn {
+    background: none; border: none;
+    font-size: 11.5px;
+    color: var(--maroon);
+    opacity: 0.6;
+    padding: 4px 6px;
+  }
+
+  /* ---------- ADD EVENT / MEMBER FORMS ---------- */
+  .inline-form {
+    background: var(--card-bg);
+    border: 1px solid rgba(43,32,24,0.1);
+    border-radius: 14px;
+    padding: 14px;
+    margin: 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .inline-form input {
+    border: 1px solid rgba(43,32,24,0.15);
+    border-radius: 9px;
+    padding: 9px 11px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+  }
+  .inline-form-row { display: flex; gap: 8px; }
+  .inline-form-row input { flex: 1; }
+  .form-buttons { display: flex; gap: 8px; margin-top: 2px; }
+  .btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+  }
+  .btn-primary { background: var(--maroon); color: #fff; }
+  .btn-secondary { background: var(--cream-2); color: var(--ink-soft); }
+
+  /* ---------- FAMILY MEMBERS SECTION ---------- */
+  .family-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 16px;
+  }
+  .family-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--card-bg);
+    border: 1px solid rgba(43,32,24,0.08);
+    border-radius: 20px;
+    padding: 6px 12px 6px 6px;
+  }
+  .family-chip .person-avatar { width: 22px; height: 22px; font-size: 10px; }
+  .family-chip span.name { font-size: 13px; font-weight: 600; }
+  .family-chip button {
+    background: none; border: none; color: var(--maroon);
+    font-size: 14px; line-height: 1; opacity: 0.5; padding: 0 0 0 2px;
+  }
+
+  /* ---------- FOOTER / TOAST ---------- */
+  .footer-note {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    padding: 24px 24px 0;
+    line-height: 1.6;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .25s ease;
+    z-index: 50;
+    white-space: nowrap;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .loading-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+
+  ::selection { background: rgba(201,122,43,0.25); }
+
+  /* ---------- REPORT TAB ---------- */
+  .stat-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .stat {
+    flex: 1; min-width: 76px;
+    background: var(--card-bg);
+    border: 1px solid rgba(43,32,24,0.08);
+    border-radius: 10px;
+    padding: 8px 8px;
+    text-align: center;
+  }
+  .stat .n { font-family: Georgia, serif; font-size: 17px; font-weight: 700; color: var(--maroon); display: block; }
+  .stat .l { font-size: 9px; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-soft); }
+
+  .filters { padding: 18px 16px 4px; }
+  .filter-group { margin-bottom: 14px; }
+  .filter-label {
+    font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--ink-soft); font-weight: 600; margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .filter-label button { background: none; border: none; color: var(--teal); font-size: 11px; font-weight: 600; text-transform: none; letter-spacing: 0; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    padding: 6px 12px; border-radius: 16px; font-size: 12.5px; font-weight: 600;
+    border: 1.5px solid rgba(43,32,24,0.14); background: var(--card-bg); color: var(--ink-soft);
+    cursor: pointer; user-select: none; transition: all .15s ease;
+  }
+  .chip.active { background: var(--rchip, var(--marigold)); border-color: var(--rchip, var(--marigold)); color: #fff; }
+
+  .view-toggle { display: flex; gap: 6px; padding: 14px 16px 0; }
+  .view-btn { flex: 1; padding: 9px; border-radius: 9px; font-size: 13px; font-weight: 600; border: 1.5px solid rgba(43,32,24,0.12); background: var(--card-bg); color: var(--ink-soft); }
+  .view-btn.active { background: var(--maroon); border-color: var(--maroon); color: #fff; }
+
+  .table-wrap { padding: 16px 12px 8px; overflow-x: auto; }
+  table.report-table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 12px; overflow: hidden; font-size: 12.5px; min-width: 540px; }
+  table.report-table th, table.report-table td { padding: 9px 10px; text-align: left; border-bottom: 1px solid rgba(43,32,24,0.07); vertical-align: top; }
+  table.report-table thead th { background: var(--cream-2); font-size: 10.5px; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-soft); font-weight: 700; position: sticky; top: 0; }
+  table.report-table th.event-col-head { font-family: Georgia, serif; font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--ink); white-space: nowrap; }
+  table.report-table td.person-col { font-weight: 700; white-space: nowrap; background: var(--cream-2); position: sticky; left: 0; }
+  table.report-table tbody tr:last-child td { border-bottom: none; }
+  table.report-table tbody tr:nth-child(even) td:not(.person-col) { background: rgba(201,122,43,0.03); }
+
+  .cell-block { line-height: 1.5; }
+  .cell-style { font-weight: 600; color: var(--ink); }
+  .cell-color-row { display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+  .cell-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.1); }
+  .cell-jewelry { color: var(--ink-soft); font-size: 11.5px; margin-top: 2px; }
+  .cell-empty { color: var(--grey, #b8ac9c); font-style: italic; }
+
+  .list-wrap { padding: 14px 16px 8px; display: flex; flex-direction: column; gap: 8px; }
+  .list-card { background: var(--card-bg); border: 1px solid rgba(43,32,24,0.08); border-left: 4px solid var(--rchip, var(--marigold)); border-radius: 10px; padding: 10px 12px; }
+  .list-card-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .list-card-event { font-family: Georgia, serif; font-size: 13.5px; color: var(--ink); }
+  .list-card-person { font-size: 11.5px; color: var(--ink-soft); font-weight: 600; }
+  .list-card-body { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; }
+  .list-field-label { color: var(--ink-soft); font-size: 9.5px; text-transform: uppercase; letter-spacing: .03em; display:block; margin-bottom: 1px;}
+  .list-field-value { color: var(--ink); font-weight: 500; }
+
+  .status-badge { display: inline-block; font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 8px; text-transform: uppercase; letter-spacing: .02em; }
+  .status-complete { background: rgba(61,107,63,0.14); color: #3d6b3f; }
+  .status-partial { background: rgba(168,97,29,0.14); color: var(--marigold-deep); }
+  .status-empty { background: rgba(184,172,156,0.18); color: var(--ink-soft); }
+
+  .empty-state { padding: 40px 20px; text-align: center; color: var(--ink-soft); font-size: 14px; }
+
+  /* ---------- EXPORT PDF BUTTON ---------- */
+  .export-row { padding: 14px 16px 0; }
+  .export-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    border: 1.5px solid var(--teal);
+    background: var(--card-bg);
+    color: var(--teal);
+  }
+  .export-btn svg { width: 16px; height: 16px; }
+  .export-btn:active { background: var(--teal); color: #fff; }
+
+  .print-only { display: none; }
+
+  @media print {
+    .tab-bar, .filters, .view-toggle, .export-row, .sheet-backdrop, .toast, .r-tappable::after { display: none !important; }
+    body { background: #fff; }
+    #app { max-width: 100%; padding-bottom: 0; }
+    header { border-bottom: 2px solid var(--maroon); padding: 0 0 14px; background: none !important; }
+    header::before { display: none; }
+    .stat-row { margin-top: 10px; }
+    .stat { border: 1px solid #ccc; box-shadow: none; }
+    .print-only { display: block; }
+    .print-meta {
+      font-size: 10.5px;
+      color: var(--ink-soft);
+      margin: 4px 0 0;
+    }
+    .table-wrap { padding: 14px 0 0; overflow: visible; }
+    table.report-table { min-width: 0; width: 100%; font-size: 11px; }
+    table.report-table td.person-col { position: static; }
+    table.report-table th { position: static; }
+    .list-wrap { padding: 14px 0 0; }
+    .list-card { break-inside: avoid; }
+    .footer-note { padding-top: 16px; }
+    .r-tappable { cursor: default; }
+  }
+
+  /* ---------- EDIT SHEET (modal) ---------- */
+  .sheet-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(43,32,24,0.42);
+    z-index: 60;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+  }
+  .sheet-backdrop.show { opacity: 1; pointer-events: auto; }
+  .sheet {
+    width: 100%;
+    max-width: 560px;
+    background: var(--cream);
+    border-radius: 20px 20px 0 0;
+    padding: 10px 20px calc(22px + env(safe-area-inset-bottom, 0px));
+    transform: translateY(100%);
+    transition: transform .28s cubic-bezier(.32,.72,0,1);
+    box-shadow: 0 -8px 30px rgba(43,32,24,0.18);
+  }
+  .sheet-backdrop.show .sheet { transform: translateY(0); }
+  .sheet-handle {
+    width: 36px; height: 4px;
+    background: rgba(43,32,24,0.18);
+    border-radius: 3px;
+    margin: 6px auto 14px;
+  }
+  .sheet-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .sheet-head .sheet-person {
+    font-family: Georgia, serif;
+    font-size: 19px;
+    color: var(--ink);
+  }
+  .sheet-head .sheet-event {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .sheet-close-btn {
+    background: var(--cream-2);
+    border: none;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .sheet-field { margin: 14px 0; }
+  .sheet-field label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--ink-soft); font-weight: 700; display: block; margin-bottom: 6px;
+  }
+  .sheet-field input {
+    width: 100%;
+    border: 1.5px solid rgba(43,32,24,0.14);
+    background: #fff;
+    border-radius: 10px;
+    padding: 11px 12px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--ink);
+  }
+  .sheet-field input:focus {
+    outline: none;
+    border-color: var(--maroon);
+    box-shadow: 0 0 0 2px rgba(122,31,43,0.12);
+  }
+  .sheet-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .sheet-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14.5px;
+    font-weight: 700;
+    border: none;
+  }
+  .sheet-btn-save { background: var(--maroon); color: #fff; }
+  .sheet-btn-clear { background: var(--cream-2); color: var(--maroon); }
+
+  .disconnect-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 12px;
+    text-decoration: underline;
+    padding: 14px 0 2px;
+  }
+
+  .r-tappable { cursor: pointer; }
+  .r-tappable:active { background: rgba(201,122,43,0.08); }
+
+  /* ---------- SETUP SCREEN ---------- */
+  .setup-body { padding: 4px 20px 24px; }
+  .setup-steps {
+    background: var(--card-bg);
+    border: 1px solid rgba(43,32,24,0.1);
+    border-radius: 14px;
+    padding: 16px 16px 16px 34px;
+    margin: 0 0 16px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .setup-steps li { margin-bottom: 4px; }
+  .setup-steps li:last-child { margin-bottom: 0; }
+  .setup-error {
+    background: rgba(122,31,43,0.08);
+    color: var(--maroon);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    margin: 0 0 14px;
+  }
+
+  /* ---------- SYNC STATUS PILL ---------- */
+  .sync-row { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+  .sync-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: var(--card-bg);
+    border: 1px solid rgba(43,32,24,0.1);
+    border-radius: 12px;
+    padding: 4px 10px 4px 8px;
+  }
+  .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #9a9a9a; flex-shrink: 0; }
+  .sync-dot.saved { background: #3d6b3f; }
+  .sync-dot.saving { background: var(--marigold); animation: pulse 1s infinite; }
+  .sync-dot.error, .sync-dot.offline { background: var(--maroon); }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.35;} }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="loading-screen" id="loading">Loading your wedding plan…</div>
+</div>
+
+<div class="sheet-backdrop" id="edit-sheet-backdrop">
+  <div class="sheet" id="edit-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <div>
+        <div class="sheet-person" id="sheet-person-name"></div>
+        <div class="sheet-event" id="sheet-event-name"></div>
+      </div>
+      <button class="sheet-close-btn" id="sheet-close-btn">✕</button>
+    </div>
+    <div class="sheet-field">
+      <label>Style</label>
+      <input type="text" id="sheet-input-style" placeholder="e.g. Kanjeevaram saree" />
+    </div>
+    <div class="sheet-field">
+      <label>Color</label>
+      <input type="text" id="sheet-input-color" placeholder="e.g. Maroon &amp; gold" />
+    </div>
+    <div class="sheet-field">
+      <label>Jewelry style</label>
+      <input type="text" id="sheet-input-jewelry" placeholder="e.g. Temple jewelry set, jhumkas" />
+    </div>
+    <div class="sheet-actions">
+      <button class="sheet-btn sheet-btn-clear" id="sheet-clear-btn">Clear</button>
+      <button class="sheet-btn sheet-btn-save" id="sheet-save-btn">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheet-backdrop" id="rename-sheet-backdrop">
+  <div class="sheet" id="rename-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <div>
+        <div class="sheet-person">Rename this app</div>
+        <div class="sheet-event">Shown at the top of both tabs</div>
+      </div>
+      <button class="sheet-close-btn" id="rename-sheet-close-btn">✕</button>
+    </div>
+    <div class="sheet-field">
+      <label>Couple / event name</label>
+      <input type="text" id="rename-input-title" placeholder="e.g. Rohit &amp; Sivani" maxlength="60" />
+    </div>
+    <div class="sheet-field">
+      <label>Subtitle</label>
+      <input type="text" id="rename-input-subtitle" placeholder="e.g. Wedding Attire &amp; Jewelry Planner" maxlength="80" />
+    </div>
+    <div class="sheet-actions">
+      <button class="sheet-btn sheet-btn-save" id="rename-sheet-save-btn" style="flex:1;">Save name</button>
+    </div>
+    <button class="disconnect-link" id="disconnect-sheet-btn">Change or disconnect Google Sheet link</button>
+  </div>
+</div>
+
+<nav class="tab-bar" id="tab-bar" style="display:none;">
+  <button class="tab-btn" data-tab="plan">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-3"/><rect x="9" y="1" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>
+    <span class="tab-label">Plan</span>
+  </button>
+  <button class="tab-btn" data-tab="report">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+    <span class="tab-label">Report</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SYNC_URL_KEY = "rs-wedding-sync-url-v1";
+  var CACHE_KEY = "rs-wedding-sync-cache-v1";
+
+  var COLORS = ["#C97A2B","#7A1F2B","#1F5D5B","#A8611D","#5c1620","#8a6d1f","#3d6b5e","#9c3b46"];
+
+  var DEFAULT_EVENTS = [
+    { name: "Vadugu", date: "" },
+    { name: "Welcome Dinner", date: "" },
+    { name: "Haldi", date: "" },
+    { name: "Marriage", date: "" },
+    { name: "Reception", date: "" },
+    { name: "DFW Reception", date: "" },
+    { name: "Diwali", date: "" },
+    { name: "Satyanarayana Pooja", date: "" }
+  ];
+
+  var DEFAULT_MEMBERS = [
+    { name: "Ashok" }, { name: "Vani" }, { name: "Neha" }, { name: "Rohit" }, { name: "Sivani" }
+  ];
+
+  var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+
+  var state = null; // { appTitle, appSubtitle, events: [...], members: [...], plans: { eventId: { memberId: {style,color,jewelry}, _notes: "" } }, openEvents: {} }
+  var syncStatus = "idle"; // idle | saving | saved | error | offline
+  var lastSyncedAt = null;
+
+  function initials(name){
+    var parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+
+  // -------- Slug ids (derived from names so the Sheet stays the source of truth) --------
+
+  function slugify(name){
+    var s = String(name || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    return s || "item";
+  }
+
+  function uniqueSlug(name, usedMap){
+    var base = slugify(name);
+    var candidate = base, n = 2;
+    while (usedMap[candidate]) { candidate = base + "-" + n; n++; }
+    usedMap[candidate] = true;
+    return candidate;
+  }
+
+  function newUniqueEventId(name){
+    var used = {};
+    state.events.forEach(function(ev){ used[ev.id] = true; });
+    return uniqueSlug(name, used);
+  }
+
+  function newUniqueMemberId(name){
+    var used = {};
+    state.members.forEach(function(m){ used[m.id] = true; });
+    return uniqueSlug(name, used);
+  }
+
+  // -------- Sync URL (device-local pointer to the shared Google Sheet) --------
+
+  function getSyncUrl(){
+    try { return localStorage.getItem(SYNC_URL_KEY) || ""; } catch(e){ return ""; }
+  }
+  function setSyncUrl(url){
+    try { localStorage.setItem(SYNC_URL_KEY, url); } catch(e){}
+  }
+  function clearSyncUrl(){
+    try { localStorage.removeItem(SYNC_URL_KEY); } catch(e){}
+  }
+
+  function readCache(){
+    try {
+      var raw = localStorage.getItem(CACHE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch(e){ return null; }
+  }
+  function writeCache(payload){
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(payload)); } catch(e){}
+  }
+
+  // -------- Payload <-> state conversion --------
+
+  function emptyPayload(){
+    return {
+      appTitle: "Rohit & Sivani",
+      appSubtitle: "Wedding Attire & Jewelry Planner",
+      events: DEFAULT_EVENTS.slice(),
+      members: DEFAULT_MEMBERS.slice(),
+      outfits: []
+    };
+  }
+
+  function buildStateFromPayload(payload){
+    payload = payload || emptyPayload();
+    var usedEventIds = {}, usedMemberIds = {};
+    var eventNameToId = {}, memberNameToId = {};
+
+    var events = (payload.events || []).map(function(ev, idx){
+      var id = uniqueSlug(ev.name, usedEventIds);
+      eventNameToId[ev.name] = id;
+      return { id: id, name: ev.name, date: ev.date || "", accentIdx: idx };
+    });
+
+    var members = (payload.members || []).map(function(m){
+      var id = uniqueSlug(m.name, usedMemberIds);
+      memberNameToId[m.name] = id;
+      return { id: id, name: m.name };
+    });
+
+    var plans = {};
+    events.forEach(function(ev, idx){
+      plans[ev.id] = { _notes: (payload.events[idx] && payload.events[idx].notes) || "" };
+      members.forEach(function(m){
+        plans[ev.id][m.id] = { style: "", color: "", jewelry: "" };
+      });
+    });
+
+    (payload.outfits || []).forEach(function(o){
+      var eid = eventNameToId[o.event];
+      var mid = memberNameToId[o.person];
+      if (eid && mid && plans[eid] && plans[eid][mid]) {
+        plans[eid][mid] = { style: o.style || "", color: o.color || "", jewelry: o.jewelry || "" };
+      }
+    });
+
+    return {
+      appTitle: payload.appTitle || "Rohit & Sivani",
+      appSubtitle: payload.appSubtitle || "Wedding Attire & Jewelry Planner",
+      events: events,
+      members: members,
+      plans: plans,
+      openEvents: {}
+    };
+  }
+
+  function buildPayloadFromState(){
+    var outfits = [];
+    state.events.forEach(function(ev){
+      state.members.forEach(function(m){
+        var f = (state.plans[ev.id] && state.plans[ev.id][m.id]) || { style:"", color:"", jewelry:"" };
+        outfits.push({ event: ev.name, person: m.name, style: f.style || "", color: f.color || "", jewelry: f.jewelry || "" });
+      });
+    });
+    return {
+      appTitle: state.appTitle,
+      appSubtitle: state.appSubtitle,
+      events: state.events.map(function(ev){
+        return { name: ev.name, date: ev.date || "", notes: (state.plans[ev.id] && state.plans[ev.id]._notes) || "" };
+      }),
+      members: state.members.map(function(m){ return { name: m.name }; }),
+      outfits: outfits
+    };
+  }
+
+  // -------- Network sync --------
+
+  var saveTimer = null;
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ saveState(); }, 500);
+  }
+
+  async function saveState(){
+    var url = getSyncUrl();
+    if (!url) return;
+    syncStatus = "saving";
+    updateSyncIndicator();
+    var payload = buildPayloadFromState();
+    try {
+      await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoids a CORS preflight against Apps Script
+        body: JSON.stringify(payload)
+      });
+      writeCache(payload);
+      lastSyncedAt = new Date();
+      syncStatus = "saved";
+    } catch(e){
+      syncStatus = "error";
+    }
+    updateSyncIndicator();
+  }
+
+  async function fetchPayload(url){
+    var res = await fetch(url + (url.indexOf("?") === -1 ? "?" : "&") + "t=" + Date.now(), { method: "GET" });
+    if (!res.ok) throw new Error("Sync fetch failed: " + res.status);
+    return await res.json();
+  }
+
+  async function loadState(){
+    var url = getSyncUrl();
+    if (!url) { state = null; return; }
+
+    try {
+      var payload = await fetchPayload(url);
+      writeCache(payload);
+      lastSyncedAt = new Date();
+      syncStatus = "saved";
+      state = buildStateFromPayload(payload);
+
+      // First-ever connect against a blank sheet: seed it with sensible defaults and push once.
+      if (!payload.events || !payload.events.length) {
+        state = buildStateFromPayload(emptyPayload());
+        scheduleSave();
+      }
+    } catch(e){
+      syncStatus = "offline";
+      var cached = readCache();
+      state = buildStateFromPayload(cached || emptyPayload());
+    }
+  }
+
+  function showToast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function(){ t.classList.remove("show"); }, 1400);
+  }
+
+  function completionCount(eventId){
+    var plan = state.plans[eventId];
+    var total = state.members.length;
+    var done = 0;
+    state.members.forEach(function(m){
+      var f = plan[m.id];
+      if (f && (f.style || f.color || f.jewelry)) done++;
+    });
+    return { done: done, total: total };
+  }
+
+  function overallStats(){
+    var totalSlots = state.events.length * state.members.length;
+    var filledSlots = 0;
+    state.events.forEach(function(ev){
+      state.members.forEach(function(m){
+        var f = state.plans[ev.id][m.id];
+        if (f && f.style && f.color) filledSlots++;
+      });
+    });
+    return { events: state.events.length, members: state.members.length, filled: filledSlots, total: totalSlots };
+  }
+
+  function parseDate(str){
+    if (!str) return null;
+    var d = new Date(str + "T00:00:00");
+    if (isNaN(d.getTime())) return null;
+    return d;
+  }
+
+  // -------- Rendering --------
+
+  var currentTab = "plan"; // "plan" | "report"
+
+  function render(){
+    document.getElementById("tab-bar").style.display = "flex";
+    document.querySelectorAll(".tab-btn").forEach(function(btn){
+      btn.classList.toggle("active", btn.getAttribute("data-tab") === currentTab);
+    });
+    if (currentTab === "plan") renderPlanTab();
+    else renderReportTab();
+    attachTabBarHandlers();
+  }
+
+  function attachTabBarHandlers(){
+    document.querySelectorAll(".tab-btn").forEach(function(btn){
+      btn.onclick = function(){
+        currentTab = btn.getAttribute("data-tab");
+        render();
+      };
+    });
+  }
+
+  function renderPlanTab(){
+    var app = document.getElementById("app");
+    var stats = overallStats();
+
+    var html = "";
+    html += renderHeader(stats);
+    html += renderFamilySection();
+    html += renderEventsSection();
+    html += '<p class="footer-note">' + escapeHtml(state.appTitle) + '\'s wedding · attire &amp; jewelry planner<br/>Everything saves automatically on this device.</p>';
+
+    app.innerHTML = html;
+    attachHandlers();
+  }
+
+  function renderHeader(stats){
+    return '' +
+    '<header>' +
+      '<div class="kicker-row">' +
+        '<p class="kicker">' + escapeHtml(state.appTitle) + '</p>' +
+        '<button class="rename-btn" id="rename-app-btn" aria-label="Rename">' + editPencilSvg() + '</button>' +
+      '</div>' +
+      '<h1 class="title display">' + escapeHtml(state.appSubtitle) + '</h1>' +
+      '<p class="subtitle">Plan style, color, and jewelry across every function, for everyone in the family.</p>' +
+      renderSyncPill() +
+      '<div class="progress-row">' +
+        '<div class="progress-chip"><span class="num">' + stats.events + '</span><span class="lbl">Events</span></div>' +
+        '<div class="progress-chip"><span class="num">' + stats.members + '</span><span class="lbl">Family</span></div>' +
+        '<div class="progress-chip"><span class="num">' + stats.filled + '/' + stats.total + '</span><span class="lbl">Outfits set</span></div>' +
+      '</div>' +
+    '</header>';
+  }
+
+  function editPencilSvg(){
+    return '<svg viewBox="0 0 20 20" fill="none"><path d="M13.5 3.5l3 3L6 17l-3.5.5L3 14 13.5 3.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  function renderSyncPill(){
+    var label = "Synced";
+    var dotClass = "saved";
+    if (syncStatus === "saving") { label = "Syncing…"; dotClass = "saving"; }
+    else if (syncStatus === "error") { label = "Sync error — tap to retry"; dotClass = "error"; }
+    else if (syncStatus === "offline") { label = "Offline — showing last sync"; dotClass = "offline"; }
+    else if (lastSyncedAt) { label = "Synced " + timeAgo(lastSyncedAt); dotClass = "saved"; }
+    return '<div class="sync-row"><button class="sync-pill" id="sync-refresh-btn"><span class="sync-dot ' + dotClass + '"></span>' + label + '</button></div>';
+  }
+
+  function timeAgo(d){
+    var secs = Math.floor((Date.now() - d.getTime()) / 1000);
+    if (secs < 45) return "just now";
+    var mins = Math.floor(secs / 60);
+    if (mins < 60) return mins + (mins === 1 ? " min ago" : " mins ago");
+    var hrs = Math.floor(mins / 60);
+    return hrs + (hrs === 1 ? " hour ago" : " hours ago");
+  }
+
+  function attachSyncPillHandler(){
+    var btn = document.getElementById("sync-refresh-btn");
+    if (!btn) return;
+    btn.addEventListener("click", async function(){
+      syncStatus = "saving";
+      updateSyncIndicator();
+      await loadState();
+      render();
+      showToast(syncStatus === "offline" ? "Couldn't reach the sheet — showing last sync" : "Refreshed");
+    });
+  }
+
+  function updateSyncIndicator(){
+    var pill = document.getElementById("sync-refresh-btn");
+    if (!pill) return;
+    var wrap = document.createElement("div");
+    wrap.innerHTML = renderSyncPill();
+    pill.parentNode.replaceWith(wrap.firstChild);
+    attachSyncPillHandler();
+  }
+
+  function renderFamilySection(){
+    var chips = state.members.map(function(m, idx){
+      var color = COLORS[idx % COLORS.length];
+      return '<div class="family-chip">' +
+        '<span class="person-avatar" style="background:' + color + '">' + initials(m.name) + '</span>' +
+        '<span class="name">' + escapeHtml(m.name) + '</span>' +
+        '<button class="remove-member-btn" data-member-id="' + m.id + '" title="Remove">×</button>' +
+      '</div>';
+    }).join("");
+
+    return '' +
+    '<div class="section-pad">' +
+      '<div class="section-head"><h2>Family members</h2><button class="add-link" id="toggle-add-member">+ Add person</button></div>' +
+    '</div>' +
+    '<div class="family-chips">' + chips + '</div>' +
+    '<div id="add-member-form-slot"></div>';
+  }
+
+  function renderEventsSection(){
+    var cards = state.events.map(function(ev){ return renderEventCard(ev); }).join("");
+    return '' +
+    '<div class="section-pad" style="margin-top:8px;">' +
+      '<div class="section-head"><h2>Events</h2><button class="add-link" id="toggle-add-event">+ Add event</button></div>' +
+    '</div>' +
+    '<div id="add-event-form-slot"></div>' +
+    '<div class="events-list">' + cards + '</div>';
+  }
+
+  function renderEventCard(ev){
+    var isOpen = !!state.openEvents[ev.id];
+    var accent = COLORS[ev.accentIdx % COLORS.length];
+    var comp = completionCount(ev.id);
+    var d = parseDate(ev.date);
+    var dateBlock = d
+      ? '<div class="event-date-block"><span class="d">' + d.getDate() + '</span><span class="m">' + MONTHS[d.getMonth()] + '</span></div>'
+      : '<div class="event-date-block"><span class="d">·</span><span class="m">TBD</span></div>';
+
+    var dots = state.members.map(function(m){
+      var f = state.plans[ev.id][m.id];
+      var on = f && (f.style || f.color || f.jewelry);
+      return '<span class="mini-dot' + (on ? ' on' : '') + '"></span>';
+    }).join("");
+
+    var body = "";
+    if (isOpen) {
+      body = renderEventBody(ev, accent);
+    }
+
+    return '' +
+    '<div class="event-card' + (isOpen ? ' open' : '') + '" style="--accent:' + accent + '" data-event-id="' + ev.id + '">' +
+      '<button class="event-header" data-toggle-event="' + ev.id + '">' +
+        dateBlock +
+        '<div class="event-title-wrap">' +
+          '<p class="event-title display">' + escapeHtml(ev.name) + '</p>' +
+          '<div class="event-meta"><span class="mini-progress">' + dots + '</span><span>' + comp.done + ' of ' + comp.total + ' set</span></div>' +
+        '</div>' +
+        '<svg class="chevron" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '</button>' +
+      '<div class="event-body">' + body + '</div>' +
+    '</div>';
+  }
+
+  function renderEventBody(ev, accent){
+    var plan = state.plans[ev.id];
+    var persons = state.members.map(function(m, idx){
+      var f = plan[m.id];
+      var pcolor = COLORS[idx % COLORS.length];
+      return '' +
+      '<div class="person-row">' +
+        '<div class="person-row-head">' +
+          '<span class="person-avatar" style="background:' + pcolor + '">' + initials(m.name) + '</span>' +
+          '<span class="person-name">' + escapeHtml(m.name) + '</span>' +
+        '</div>' +
+        '<div class="field-grid">' +
+          '<div class="field">' +
+            '<label>Style</label>' +
+            '<input type="text" placeholder="e.g. Kanjeevaram saree" value="' + escapeAttr(f.style) + '" data-field="style" data-event="' + ev.id + '" data-member="' + m.id + '" />' +
+          '</div>' +
+          '<div class="field">' +
+            '<label>Color</label>' +
+            '<input type="text" placeholder="e.g. Maroon &amp; gold" value="' + escapeAttr(f.color) + '" data-field="color" data-event="' + ev.id + '" data-member="' + m.id + '" />' +
+          '</div>' +
+        '</div>' +
+        '<div class="field-grid jewelry-grid" style="margin-top:6px;">' +
+          '<div class="field">' +
+            '<label>Jewelry style</label>' +
+            '<input type="text" placeholder="e.g. Temple jewelry set, jhumkas" value="' + escapeAttr(f.jewelry) + '" data-field="jewelry" data-event="' + ev.id + '" data-member="' + m.id + '" />' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+
+    return '' +
+    '<div class="event-body-inner">' +
+      '<textarea class="event-notes" rows="2" placeholder="Notes for this event (venue, theme, dress code)…" data-notes-event="' + ev.id + '">' + escapeHtml(plan._notes || "") + '</textarea>' +
+      persons +
+      '<div class="event-actions">' +
+        '<button class="delete-event-btn" data-delete-event="' + ev.id + '">Remove this event</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function escapeHtml(str){
+    if (!str) return "";
+    return String(str).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  }
+  function escapeAttr(str){ return escapeHtml(str); }
+
+  // -------- Report tab: state --------
+
+  var reportFilters = { members: null, events: null }; // null = all selected
+  var reportViewMode = "grid"; // "grid" | "list"
+
+  function reportActiveMembers(){
+    if (!reportFilters.members) return state.members;
+    return state.members.filter(function(m){ return reportFilters.members.indexOf(m.id) !== -1; });
+  }
+  function reportActiveEvents(){
+    if (!reportFilters.events) return state.events;
+    return state.events.filter(function(e){ return reportFilters.events.indexOf(e.id) !== -1; });
+  }
+
+  function reportFieldFor(eventId, memberId){
+    var p = state.plans[eventId];
+    if (!p) return { style: "", color: "", jewelry: "" };
+    return p[memberId] || { style: "", color: "", jewelry: "" };
+  }
+
+  function reportFillStatus(f){
+    var count = [f.style, f.color, f.jewelry].filter(Boolean).length;
+    if (count === 3) return "complete";
+    if (count === 0) return "empty";
+    return "partial";
+  }
+
+  function reportStats(){
+    var mems = reportActiveMembers(), evs = reportActiveEvents();
+    var total = mems.length * evs.length;
+    var complete = 0, partial = 0, empty = 0;
+    evs.forEach(function(ev){
+      mems.forEach(function(m){
+        var s = reportFillStatus(reportFieldFor(ev.id, m.id));
+        if (s === "complete") complete++;
+        else if (s === "partial") partial++;
+        else empty++;
+      });
+    });
+    return { total: total, complete: complete, partial: partial, empty: empty, mems: mems.length, evs: evs.length };
+  }
+
+  // -------- Report tab: rendering --------
+
+  function renderReportTab(){
+    var app = document.getElementById("app");
+
+    if (!state.events.length || !state.members.length) {
+      app.innerHTML =
+        '<header><div class="kicker-row"><p class="kicker">' + escapeHtml(state.appTitle) + '</p><button class="rename-btn" id="rename-app-btn" aria-label="Rename">' + editPencilSvg() + '</button></div><h1 class="title display">Attire Report</h1></header>' +
+        '<div class="empty-state">No events or family members yet.<br/>Add them in the Plan tab and they\'ll show up here.</div>';
+      attachTitleRenameHandler();
+      return;
+    }
+
+    var stats = reportStats();
+    var html = "";
+    html += renderReportHeader(stats);
+    html += renderReportFilters();
+    html += renderReportViewToggle();
+    html += (reportViewMode === "grid") ? renderReportGrid() : renderReportList();
+    html += '<p class="footer-note">' + escapeHtml(state.appTitle) + '\'s wedding · attire report<br/>Reflects everything saved in the Plan tab.</p>';
+
+    app.innerHTML = html;
+    attachReportHandlers();
+  }
+
+  function renderReportHeader(stats){
+    return '' +
+    '<header>' +
+      '<div class="kicker-row">' +
+        '<p class="kicker">' + escapeHtml(state.appTitle) + '</p>' +
+        '<button class="rename-btn" id="rename-app-btn" aria-label="Rename">' + editPencilSvg() + '</button>' +
+      '</div>' +
+      '<h1 class="title display">Attire Report</h1>' +
+      '<p class="subtitle">Selected: ' + stats.mems + ' ' + (stats.mems === 1 ? 'person' : 'people') + ' × ' + stats.evs + ' ' + (stats.evs === 1 ? 'event' : 'events') + '</p>' +
+      renderSyncPill() +
+      '<p class="print-meta print-only">Generated ' + formatToday() + '</p>' +
+      '<div class="stat-row">' +
+        '<div class="stat"><span class="n">' + stats.complete + '</span><span class="l">Complete</span></div>' +
+        '<div class="stat"><span class="n">' + stats.partial + '</span><span class="l">Partial</span></div>' +
+        '<div class="stat"><span class="n">' + stats.empty + '</span><span class="l">Not started</span></div>' +
+        '<div class="stat"><span class="n">' + stats.total + '</span><span class="l">Total slots</span></div>' +
+      '</div>' +
+    '</header>';
+  }
+
+  function renderReportFilters(){
+    var memberChips = state.members.map(function(m, idx){
+      var active = !reportFilters.members || reportFilters.members.indexOf(m.id) !== -1;
+      var color = COLORS[idx % COLORS.length];
+      return '<div class="chip' + (active ? ' active' : '') + '" style="--rchip:' + color + '" data-r-toggle-member="' + m.id + '">' + escapeHtml(m.name) + '</div>';
+    }).join("");
+
+    var eventChips = state.events.map(function(ev, idx){
+      var active = !reportFilters.events || reportFilters.events.indexOf(ev.id) !== -1;
+      var color = COLORS[ev.accentIdx % COLORS.length];
+      return '<div class="chip' + (active ? ' active' : '') + '" style="--rchip:' + color + '" data-r-toggle-event="' + ev.id + '">' + escapeHtml(ev.name) + '</div>';
+    }).join("");
+
+    return '' +
+    '<div class="filters">' +
+      '<div class="filter-group">' +
+        '<div class="filter-label"><span>People</span><button data-r-reset="members">Select all</button></div>' +
+        '<div class="chip-row">' + memberChips + '</div>' +
+      '</div>' +
+      '<div class="filter-group">' +
+        '<div class="filter-label"><span>Events</span><button data-r-reset="events">Select all</button></div>' +
+        '<div class="chip-row">' + eventChips + '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function renderReportViewToggle(){
+    return '' +
+    '<div class="view-toggle">' +
+      '<button class="view-btn' + (reportViewMode === "grid" ? ' active' : '') + '" data-r-view="grid">Grid table</button>' +
+      '<button class="view-btn' + (reportViewMode === "list" ? ' active' : '') + '" data-r-view="list">List view</button>' +
+    '</div>' +
+    '<div class="export-row">' +
+      '<button class="export-btn" id="export-pdf-btn">' + exportIconSvg() + '<span>Export as PDF</span></button>' +
+    '</div>';
+  }
+
+  function exportIconSvg(){
+    return '<svg viewBox="0 0 20 20" fill="none"><path d="M10 2v10m0 0l-3.5-3.5M10 12l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 13.5v2A1.5 1.5 0 0 0 5 17h10a1.5 1.5 0 0 0 1.5-1.5v-2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  function formatToday(){
+    var d = new Date();
+    var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    return months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+  }
+
+  function renderReportGrid(){
+    var mems = reportActiveMembers();
+    var evs = reportActiveEvents();
+    if (!mems.length || !evs.length) return '<div class="empty-state">No matching people or events selected.</div>';
+
+    var head = '<tr><th style="position:sticky;left:0;background:var(--cream-2);">Person</th>' +
+      evs.map(function(ev){ return '<th class="event-col-head">' + escapeHtml(ev.name) + '</th>'; }).join("") +
+      '</tr>';
+
+    var rows = mems.map(function(m){
+      var cells = evs.map(function(ev){
+        return '<td class="r-tappable" data-sheet-event="' + ev.id + '" data-sheet-member="' + m.id + '">' + renderReportCell(reportFieldFor(ev.id, m.id)) + '</td>';
+      }).join("");
+      return '<tr><td class="person-col">' + escapeHtml(m.name) + '</td>' + cells + '</tr>';
+    }).join("");
+
+    return '<div class="table-wrap"><table class="report-table"><thead>' + head + '</thead><tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function renderReportCell(f){
+    if (!f.style && !f.color && !f.jewelry) return '<span class="cell-empty">— not set —</span>';
+    var parts = [];
+    if (f.style) parts.push('<div class="cell-style">' + escapeHtml(f.style) + '</div>');
+    if (f.color) parts.push('<div class="cell-color-row"><span class="cell-dot" style="background:' + colorSwatchGuess(f.color) + '"></span>' + escapeHtml(f.color) + '</div>');
+    if (f.jewelry) parts.push('<div class="cell-jewelry">' + escapeHtml(f.jewelry) + '</div>');
+    return '<div class="cell-block">' + parts.join("") + '</div>';
+  }
+
+  function colorSwatchGuess(text){
+    var t = text.toLowerCase();
+    var map = {
+      red: "#b03a3a", maroon: "#7A1F2B", crimson: "#a8283f",
+      gold: "#C9A05B", golden: "#C9A05B", yellow: "#d9b23a",
+      green: "#3d6b3f", emerald: "#1f6b4f", teal: "#1F5D5B",
+      blue: "#2f5aa8", navy: "#22345e", royal: "#2f4aa8",
+      pink: "#d987a8", rose: "#c96b8a", magenta: "#a83a7f",
+      purple: "#6a3a8a", violet: "#7a4fae", lavender: "#a993cf",
+      orange: "#C97A2B", peach: "#e0a56f", coral: "#d9744f",
+      silver: "#b8b8b8", grey: "#9a9a9a", gray: "#9a9a9a", white: "#eeeae0",
+      black: "#2B2018", ivory: "#efe6d0", cream: "#F5E9D6",
+      turquoise: "#3ba7a0", mint: "#7fbfa0", mustard: "#c9a227",
+      burgundy: "#5c1620", copper: "#a8611d", bronze: "#8a6d1f"
+    };
+    for (var key in map) { if (t.indexOf(key) !== -1) return map[key]; }
+    return "#c9c0b0";
+  }
+
+  function renderReportList(){
+    var mems = reportActiveMembers();
+    var evs = reportActiveEvents();
+    if (!mems.length || !evs.length) return '<div class="empty-state">No matching people or events selected.</div>';
+
+    var cards = [];
+    evs.forEach(function(ev){
+      var accent = COLORS[ev.accentIdx % COLORS.length];
+      mems.forEach(function(m){
+        var f = reportFieldFor(ev.id, m.id);
+        var status = reportFillStatus(f);
+        var badgeClass = status === "complete" ? "status-complete" : (status === "partial" ? "status-partial" : "status-empty");
+        var badgeLabel = status === "complete" ? "Set" : (status === "partial" ? "Partial" : "Not started");
+        var body = reportFieldChip("Style", f.style) + reportFieldChip("Color", f.color) + reportFieldChip("Jewelry", f.jewelry);
+        cards.push('' +
+          '<div class="list-card r-tappable" style="--rchip:' + accent + '" data-sheet-event="' + ev.id + '" data-sheet-member="' + m.id + '">' +
+            '<div class="list-card-top">' +
+              '<span class="list-card-event display">' + escapeHtml(ev.name) + '</span>' +
+              '<span class="status-badge ' + badgeClass + '">' + badgeLabel + '</span>' +
+            '</div>' +
+            '<div class="list-card-person">' + escapeHtml(m.name) + '</div>' +
+            '<div class="list-card-body" style="margin-top:6px;">' + body + '</div>' +
+          '</div>'
+        );
+      });
+    });
+    return '<div class="list-wrap">' + cards.join("") + '</div>';
+  }
+
+  function reportFieldChip(label, value){
+    return '<div><span class="list-field-label">' + label + '</span><span class="list-field-value">' + (value ? escapeHtml(value) : '<span class="cell-empty">—</span>') + '</span></div>';
+  }
+
+  function attachReportHandlers(){
+    attachTitleRenameHandler();
+    attachSyncPillHandler();
+
+    var exportBtn = document.getElementById("export-pdf-btn");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", function(){
+        window.print();
+      });
+    }
+
+    document.querySelectorAll("[data-r-toggle-member]").forEach(function(chip){
+      chip.addEventListener("click", function(){
+        var id = chip.getAttribute("data-r-toggle-member");
+        if (!reportFilters.members) reportFilters.members = state.members.map(function(m){ return m.id; });
+        var idx = reportFilters.members.indexOf(id);
+        if (idx === -1) reportFilters.members.push(id); else reportFilters.members.splice(idx, 1);
+        if (reportFilters.members.length === state.members.length) reportFilters.members = null;
+        render();
+      });
+    });
+    document.querySelectorAll("[data-r-toggle-event]").forEach(function(chip){
+      chip.addEventListener("click", function(){
+        var id = chip.getAttribute("data-r-toggle-event");
+        if (!reportFilters.events) reportFilters.events = state.events.map(function(e){ return e.id; });
+        var idx = reportFilters.events.indexOf(id);
+        if (idx === -1) reportFilters.events.push(id); else reportFilters.events.splice(idx, 1);
+        if (reportFilters.events.length === state.events.length) reportFilters.events = null;
+        render();
+      });
+    });
+    document.querySelectorAll("[data-r-reset]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        reportFilters[btn.getAttribute("data-r-reset")] = null;
+        render();
+      });
+    });
+    document.querySelectorAll("[data-r-view]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        reportViewMode = btn.getAttribute("data-r-view");
+        render();
+      });
+    });
+    document.querySelectorAll("[data-sheet-event]").forEach(function(el){
+      el.addEventListener("click", function(){
+        openEditSheet(el.getAttribute("data-sheet-event"), el.getAttribute("data-sheet-member"));
+      });
+    });
+  }
+
+  // -------- Edit sheet (used from Report tab) --------
+
+  var sheetContext = null; // { eventId, memberId }
+
+  function openEditSheet(eventId, memberId){
+    var ev = state.events.find(function(x){ return x.id === eventId; });
+    var m = state.members.find(function(x){ return x.id === memberId; });
+    if (!ev || !m) return;
+    sheetContext = { eventId: eventId, memberId: memberId };
+    var f = reportFieldFor(eventId, memberId);
+
+    document.getElementById("sheet-person-name").textContent = m.name;
+    document.getElementById("sheet-event-name").textContent = ev.name;
+    document.getElementById("sheet-input-style").value = f.style || "";
+    document.getElementById("sheet-input-color").value = f.color || "";
+    document.getElementById("sheet-input-jewelry").value = f.jewelry || "";
+
+    var backdrop = document.getElementById("edit-sheet-backdrop");
+    backdrop.classList.add("show");
+  }
+
+  function closeEditSheet(){
+    document.getElementById("edit-sheet-backdrop").classList.remove("show");
+    sheetContext = null;
+  }
+
+  function saveEditSheet(){
+    if (!sheetContext) return;
+    var eid = sheetContext.eventId, mid = sheetContext.memberId;
+    if (!state.plans[eid]) state.plans[eid] = { _notes: "" };
+    if (!state.plans[eid][mid]) state.plans[eid][mid] = { style: "", color: "", jewelry: "" };
+    state.plans[eid][mid].style = document.getElementById("sheet-input-style").value;
+    state.plans[eid][mid].color = document.getElementById("sheet-input-color").value;
+    state.plans[eid][mid].jewelry = document.getElementById("sheet-input-jewelry").value;
+    scheduleSave();
+    closeEditSheet();
+    render();
+    showToast("Saved");
+  }
+
+  function clearEditSheet(){
+    if (!sheetContext) return;
+    document.getElementById("sheet-input-style").value = "";
+    document.getElementById("sheet-input-color").value = "";
+    document.getElementById("sheet-input-jewelry").value = "";
+  }
+
+  function initEditSheet(){
+    document.getElementById("sheet-close-btn").addEventListener("click", closeEditSheet);
+    document.getElementById("edit-sheet-backdrop").addEventListener("click", function(e){
+      if (e.target.id === "edit-sheet-backdrop") closeEditSheet();
+    });
+    document.getElementById("sheet-save-btn").addEventListener("click", saveEditSheet);
+    document.getElementById("sheet-clear-btn").addEventListener("click", clearEditSheet);
+  }
+
+  // -------- App title rename --------
+
+  function attachTitleRenameHandler(){
+    var btn = document.getElementById("rename-app-btn");
+    if (btn) btn.addEventListener("click", openRenameSheet);
+  }
+
+  function openRenameSheet(){
+    document.getElementById("rename-input-title").value = state.appTitle;
+    document.getElementById("rename-input-subtitle").value = state.appSubtitle;
+    document.getElementById("rename-sheet-backdrop").classList.add("show");
+    setTimeout(function(){ document.getElementById("rename-input-title").focus(); }, 260);
+  }
+
+  function closeRenameSheet(){
+    document.getElementById("rename-sheet-backdrop").classList.remove("show");
+  }
+
+  function saveRenameSheet(){
+    var t = document.getElementById("rename-input-title").value.trim();
+    var s = document.getElementById("rename-input-subtitle").value.trim();
+    state.appTitle = t || "Untitled";
+    state.appSubtitle = s || "Wedding Attire & Jewelry Planner";
+    document.title = state.appTitle + " — " + state.appSubtitle;
+    scheduleSave();
+    closeRenameSheet();
+    render();
+    showToast("Name updated");
+  }
+
+  function initRenameSheet(){
+    document.getElementById("rename-sheet-close-btn").addEventListener("click", closeRenameSheet);
+    document.getElementById("rename-sheet-backdrop").addEventListener("click", function(e){
+      if (e.target.id === "rename-sheet-backdrop") closeRenameSheet();
+    });
+    document.getElementById("rename-sheet-save-btn").addEventListener("click", saveRenameSheet);
+    document.getElementById("disconnect-sheet-btn").addEventListener("click", function(){
+      if (confirm("Disconnect from this Google Sheet? You can reconnect (to this one or a different one) right after.")) {
+        clearSyncUrl();
+        closeRenameSheet();
+        renderSetupScreen();
+      }
+    });
+  }
+
+  // -------- Event handlers --------
+
+  function attachHandlers(){
+    attachTitleRenameHandler();
+    attachSyncPillHandler();
+
+    // Toggle event open/close
+    document.querySelectorAll("[data-toggle-event]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.getAttribute("data-toggle-event");
+        state.openEvents[id] = !state.openEvents[id];
+        render();
+      });
+    });
+
+    // Field inputs
+    document.querySelectorAll("input[data-field]").forEach(function(inp){
+      inp.addEventListener("input", function(){
+        var eid = inp.getAttribute("data-event");
+        var mid = inp.getAttribute("data-member");
+        var field = inp.getAttribute("data-field");
+        state.plans[eid][mid][field] = inp.value;
+        scheduleSave();
+        updateProgressUI();
+      });
+    });
+
+    // Notes
+    document.querySelectorAll("textarea[data-notes-event]").forEach(function(ta){
+      ta.addEventListener("input", function(){
+        var eid = ta.getAttribute("data-notes-event");
+        state.plans[eid]._notes = ta.value;
+        scheduleSave();
+      });
+    });
+
+    // Delete event
+    document.querySelectorAll("[data-delete-event]").forEach(function(btn){
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        var id = btn.getAttribute("data-delete-event");
+        var ev = state.events.find(function(x){ return x.id === id; });
+        if (!ev) return;
+        if (confirm('Remove "' + ev.name + '" and all its outfit plans?')) {
+          state.events = state.events.filter(function(x){ return x.id !== id; });
+          delete state.plans[id];
+          delete state.openEvents[id];
+          scheduleSave();
+          render();
+          showToast("Event removed");
+        }
+      });
+    });
+
+    // Remove member
+    document.querySelectorAll(".remove-member-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.getAttribute("data-member-id");
+        var m = state.members.find(function(x){ return x.id === id; });
+        if (!m) return;
+        if (confirm('Remove "' + m.name + '" from all events?')) {
+          state.members = state.members.filter(function(x){ return x.id !== id; });
+          state.events.forEach(function(ev){
+            if (state.plans[ev.id]) delete state.plans[ev.id][id];
+          });
+          scheduleSave();
+          render();
+          showToast("Family member removed");
+        }
+      });
+    });
+
+    // Toggle add-event form
+    var addEventBtn = document.getElementById("toggle-add-event");
+    if (addEventBtn) {
+      addEventBtn.addEventListener("click", function(){
+        toggleAddEventForm();
+      });
+    }
+
+    // Toggle add-member form
+    var addMemberBtn = document.getElementById("toggle-add-member");
+    if (addMemberBtn) {
+      addMemberBtn.addEventListener("click", function(){
+        toggleAddMemberForm();
+      });
+    }
+  }
+
+  function updateProgressUI(){
+    // Lightweight update without full re-render: update chip counts and dots
+    var stats = overallStats();
+    var chip = document.querySelector(".progress-chip:nth-child(3) .num");
+    if (chip) chip.textContent = stats.filled + "/" + stats.total;
+
+    state.events.forEach(function(ev){
+      var card = document.querySelector('.event-card[data-event-id="' + ev.id + '"]');
+      if (!card) return;
+      var comp = completionCount(ev.id);
+      var metaSpan = card.querySelector(".event-meta span:last-child");
+      if (metaSpan) metaSpan.textContent = comp.done + " of " + comp.total + " set";
+      var dots = card.querySelectorAll(".mini-dot");
+      state.members.forEach(function(m, idx){
+        var f = state.plans[ev.id][m.id];
+        var on = f && (f.style || f.color || f.jewelry);
+        if (dots[idx]) dots[idx].classList.toggle("on", !!on);
+      });
+    });
+  }
+
+  function toggleAddEventForm(){
+    var slot = document.getElementById("add-event-form-slot");
+    if (slot.querySelector(".inline-form")) {
+      slot.innerHTML = "";
+      return;
+    }
+    slot.innerHTML = '' +
+    '<div class="inline-form">' +
+      '<div class="inline-form-row">' +
+        '<input type="text" id="new-event-name" placeholder="Event name (e.g. Mehndi)" />' +
+      '</div>' +
+      '<div class="inline-form-row">' +
+        '<input type="date" id="new-event-date" />' +
+      '</div>' +
+      '<div class="form-buttons">' +
+        '<button class="btn btn-secondary" id="cancel-add-event">Cancel</button>' +
+        '<button class="btn btn-primary" id="confirm-add-event">Add event</button>' +
+      '</div>' +
+    '</div>';
+
+    document.getElementById("cancel-add-event").addEventListener("click", function(){ slot.innerHTML = ""; });
+    document.getElementById("confirm-add-event").addEventListener("click", function(){
+      var nameInp = document.getElementById("new-event-name");
+      var dateInp = document.getElementById("new-event-date");
+      var name = nameInp.value.trim();
+      if (!name) { nameInp.focus(); return; }
+      var newEv = {
+        id: newUniqueEventId(name),
+        name: name,
+        date: dateInp.value || "",
+        accentIdx: state.events.length
+      };
+      state.events.push(newEv);
+      state.plans[newEv.id] = { _notes: "" };
+      state.members.forEach(function(m){
+        state.plans[newEv.id][m.id] = { style: "", color: "", jewelry: "" };
+      });
+      state.openEvents[newEv.id] = true;
+      scheduleSave();
+      render();
+      showToast('"' + name + '" added');
+    });
+    document.getElementById("new-event-name").focus();
+  }
+
+  function toggleAddMemberForm(){
+    var slot = document.getElementById("add-member-form-slot");
+    if (slot.querySelector(".inline-form")) {
+      slot.innerHTML = "";
+      return;
+    }
+    slot.innerHTML = '' +
+    '<div class="inline-form" style="margin-top:12px;">' +
+      '<div class="inline-form-row">' +
+        '<input type="text" id="new-member-name" placeholder="Family member name" />' +
+      '</div>' +
+      '<div class="form-buttons">' +
+        '<button class="btn btn-secondary" id="cancel-add-member">Cancel</button>' +
+        '<button class="btn btn-primary" id="confirm-add-member">Add person</button>' +
+      '</div>' +
+    '</div>';
+
+    document.getElementById("cancel-add-member").addEventListener("click", function(){ slot.innerHTML = ""; });
+    document.getElementById("confirm-add-member").addEventListener("click", function(){
+      var nameInp = document.getElementById("new-member-name");
+      var name = nameInp.value.trim();
+      if (!name) { nameInp.focus(); return; }
+      var newM = { id: newUniqueMemberId(name), name: name };
+      state.members.push(newM);
+      state.events.forEach(function(ev){
+        if (!state.plans[ev.id]) state.plans[ev.id] = { _notes: "" };
+        state.plans[ev.id][newM.id] = { style: "", color: "", jewelry: "" };
+      });
+      scheduleSave();
+      render();
+      showToast('"' + name + '" added');
+    });
+    document.getElementById("new-member-name").focus();
+  }
+
+  // -------- Boot --------
+  async function boot(){
+    initEditSheet();
+    initRenameSheet();
+
+    if (!getSyncUrl()) {
+      renderSetupScreen();
+      return;
+    }
+
+    await loadState();
+    document.title = state.appTitle + " — " + state.appSubtitle;
+    // Open the first event by default so the app feels alive on first load
+    if (state.events.length && Object.keys(state.openEvents).length === 0) {
+      state.openEvents[state.events[0].id] = true;
+    }
+    render();
+  }
+
+  function renderSetupScreen(prefillError){
+    document.getElementById("tab-bar").style.display = "none";
+    var app = document.getElementById("app");
+    app.innerHTML = '' +
+    '<header>' +
+      '<p class="kicker">Rohit &amp; Sivani</p>' +
+      '<h1 class="title display">Connect to your Google Sheet</h1>' +
+      '<p class="subtitle">This links the app to a Google Sheet so everyone\'s phone and desktop stay in sync.</p>' +
+    '</header>' +
+    '<div class="setup-body">' +
+      '<ol class="setup-steps">' +
+        '<li>Create a Google Sheet (any name).</li>' +
+        '<li>Extensions &rarr; Apps Script, paste in the script you were given, and save.</li>' +
+        '<li>Deploy &rarr; New deployment &rarr; Web app. Execute as <b>Me</b>, access <b>Anyone</b>.</li>' +
+        '<li>Copy the Web app URL it gives you and paste it below.</li>' +
+      '</ol>' +
+      (prefillError ? '<p class="setup-error">Couldn\'t connect with that link. Double-check it\'s the Web app URL (ends in <code>/exec</code>) and that access is set to "Anyone".</p>' : '') +
+      '<div class="sheet-field">' +
+        '<label>Google Sheet web app URL</label>' +
+        '<input type="url" id="setup-url-input" placeholder="https://script.google.com/macros/s/.../exec" autocapitalize="off" autocorrect="off" spellcheck="false" />' +
+      '</div>' +
+      '<button class="btn btn-primary" id="setup-connect-btn" style="width:100%;">Connect</button>' +
+    '</div>';
+
+    document.getElementById("setup-connect-btn").addEventListener("click", async function(){
+      var input = document.getElementById("setup-url-input");
+      var url = input.value.trim();
+      if (!url) { input.focus(); return; }
+      var btn = document.getElementById("setup-connect-btn");
+      btn.textContent = "Connecting…";
+      btn.disabled = true;
+      try {
+        await fetchPayload(url);
+        setSyncUrl(url);
+        document.getElementById("tab-bar").style.display = "flex";
+        await loadState();
+        document.title = state.appTitle + " — " + state.appSubtitle;
+        if (state.events.length) state.openEvents[state.events[0].id] = true;
+        render();
+      } catch(e){
+        renderSetupScreen(true);
+      }
+    });
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>
