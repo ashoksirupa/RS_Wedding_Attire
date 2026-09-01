@@ -800,6 +800,7 @@
     <div class="sheet-actions">
       <button class="sheet-btn sheet-btn-save" id="rename-sheet-save-btn" style="flex:1;">Save name</button>
     </div>
+    <button class="disconnect-link" id="copy-share-link-btn" style="text-decoration:none;font-weight:700;color:var(--teal);padding-top:16px;">Copy shareable link for family</button>
     <button class="disconnect-link" id="disconnect-sheet-btn">Change or disconnect Google Sheet link</button>
   </div>
 </div>
@@ -880,16 +881,46 @@
     return uniqueSlug(name, used);
   }
 
-  // -------- Sync URL (device-local pointer to the shared Google Sheet) --------
+  // -------- Sync URL: URL query param is the source of truth (survives Home Screen
+  // bookmarking reliably); localStorage is a same-tab convenience fallback. --------
+
+  function getUrlSyncParam(){
+    try {
+      var params = new URLSearchParams(window.location.search);
+      return params.get("sync") || "";
+    } catch(e){ return ""; }
+  }
+
+  function embedSyncUrlInAddressBar(url){
+    try {
+      var u = new URL(window.location.href);
+      u.searchParams.set("sync", url);
+      window.history.replaceState({}, "", u.toString());
+    } catch(e){}
+  }
 
   function getSyncUrl(){
-    try { return localStorage.getItem(SYNC_URL_KEY) || ""; } catch(e){ return ""; }
+    var fromUrl = getUrlSyncParam();
+    if (fromUrl) {
+      setSyncUrl(fromUrl);
+      return fromUrl;
+    }
+    try {
+      var stored = localStorage.getItem(SYNC_URL_KEY) || "";
+      if (stored) embedSyncUrlInAddressBar(stored);
+      return stored;
+    } catch(e){ return ""; }
   }
   function setSyncUrl(url){
     try { localStorage.setItem(SYNC_URL_KEY, url); } catch(e){}
   }
   function clearSyncUrl(){
     try { localStorage.removeItem(SYNC_URL_KEY); } catch(e){}
+    try {
+      var u = new URL(window.location.href);
+      u.searchParams.delete("sync");
+      window.history.replaceState({}, "", u.toString());
+    } catch(e){}
   }
 
   function readCache(){
@@ -1637,6 +1668,17 @@
       if (e.target.id === "rename-sheet-backdrop") closeRenameSheet();
     });
     document.getElementById("rename-sheet-save-btn").addEventListener("click", saveRenameSheet);
+    document.getElementById("copy-share-link-btn").addEventListener("click", async function(){
+      var url = getSyncUrl();
+      if (!url) { showToast("Connect a Sheet first"); return; }
+      var shareUrl = window.location.href; // already carries ?sync=... once connected
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        showToast("Link copied — send it to family");
+      } catch(e){
+        window.prompt("Copy this link and send it to family:", shareUrl);
+      }
+    });
     document.getElementById("disconnect-sheet-btn").addEventListener("click", function(){
       if (confirm("Disconnect from this Google Sheet? You can reconnect (to this one or a different one) right after.")) {
         clearSyncUrl();
@@ -1889,11 +1931,13 @@
       try {
         await fetchPayload(url);
         setSyncUrl(url);
+        embedSyncUrlInAddressBar(url);
         document.getElementById("tab-bar").style.display = "flex";
         await loadState();
         document.title = state.appTitle + " — " + state.appSubtitle;
         if (state.events.length) state.openEvents[state.events[0].id] = true;
         render();
+        showToast("Connected — now tap Share → Add to Home Screen");
       } catch(e){
         renderSetupScreen(true);
       }
