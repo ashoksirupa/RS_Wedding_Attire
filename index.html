@@ -945,40 +945,76 @@
     };
   }
 
+  function normalizeName(name){
+    return String(name || "").trim().replace(/\s+/g, " ").toLowerCase();
+  }
+
+  function dedupeByName(list){
+    var seen = {};
+    var out = [];
+    var droppedAny = false;
+    list.forEach(function(item){
+      var key = normalizeName(item.name);
+      if (!key) return; // skip blank names
+      if (seen[key] !== undefined) {
+        droppedAny = true;
+        var existing = out[seen[key]];
+        if (!existing.date && item.date) existing.date = item.date;
+        if (!existing.notes && item.notes) existing.notes = item.notes;
+        return;
+      }
+      seen[key] = out.length;
+      out.push(item);
+    });
+    return { list: out, droppedAny: droppedAny };
+  }
+
   function buildStateFromPayload(payload){
     payload = payload || emptyPayload();
+
+    var eventsDedup = dedupeByName(payload.events || []);
+    var membersDedup = dedupeByName(payload.members || []);
+    var neededCleanup = eventsDedup.droppedAny || membersDedup.droppedAny;
+
     var usedEventIds = {}, usedMemberIds = {};
     var eventNameToId = {}, memberNameToId = {};
 
-    var events = (payload.events || []).map(function(ev, idx){
+    var events = eventsDedup.list.map(function(ev, idx){
       var id = uniqueSlug(ev.name, usedEventIds);
-      eventNameToId[ev.name] = id;
+      eventNameToId[normalizeName(ev.name)] = id;
       return { id: id, name: ev.name, date: ev.date || "", accentIdx: idx };
     });
 
-    var members = (payload.members || []).map(function(m){
+    var members = membersDedup.list.map(function(m){
       var id = uniqueSlug(m.name, usedMemberIds);
-      memberNameToId[m.name] = id;
+      memberNameToId[normalizeName(m.name)] = id;
       return { id: id, name: m.name };
     });
 
     var plans = {};
     events.forEach(function(ev, idx){
-      plans[ev.id] = { _notes: (payload.events[idx] && payload.events[idx].notes) || "" };
+      plans[ev.id] = { _notes: eventsDedup.list[idx].notes || "" };
       members.forEach(function(m){
         plans[ev.id][m.id] = { style: "", color: "", jewelry: "" };
       });
     });
 
+    // If duplicate outfit rows exist for the same event+person, keep whichever
+    // has an actual value rather than letting a blank duplicate win.
     (payload.outfits || []).forEach(function(o){
-      var eid = eventNameToId[o.event];
-      var mid = memberNameToId[o.person];
+      var eid = eventNameToId[normalizeName(o.event)];
+      var mid = memberNameToId[normalizeName(o.person)];
       if (eid && mid && plans[eid] && plans[eid][mid]) {
-        plans[eid][mid] = { style: o.style || "", color: o.color || "", jewelry: o.jewelry || "" };
+        var existing = plans[eid][mid];
+        plans[eid][mid] = {
+          style: o.style || existing.style || "",
+          color: o.color || existing.color || "",
+          jewelry: o.jewelry || existing.jewelry || ""
+        };
       }
     });
 
-    return {
+    var builtState = {
       appTitle: payload.appTitle || "Rohit & Sivani",
       appSubtitle: payload.appSubtitle || "Wedding Attire & Jewelry Planner",
       events: events,
@@ -986,6 +1022,8 @@
       plans: plans,
       openEvents: {}
     };
+    builtState._neededCleanupSave = neededCleanup;
+    return builtState;
   }
 
   function buildPayloadFromState(){
@@ -1056,6 +1094,9 @@
       // First-ever connect against a blank sheet: seed it with sensible defaults and push once.
       if (!payload.events || !payload.events.length) {
         state = buildStateFromPayload(emptyPayload());
+        scheduleSave();
+      } else if (state._neededCleanupSave) {
+        // Found duplicate names (e.g. two devices added the same person) — merge and push the clean copy back.
         scheduleSave();
       }
     } catch(e){
@@ -1824,6 +1865,14 @@
       var dateInp = document.getElementById("new-event-date");
       var name = nameInp.value.trim();
       if (!name) { nameInp.focus(); return; }
+      var dupe = state.events.find(function(ev){ return normalizeName(ev.name) === normalizeName(name); });
+      if (dupe) {
+        showToast('"' + dupe.name + '" is already on the list');
+        state.openEvents[dupe.id] = true;
+        slot.innerHTML = "";
+        render();
+        return;
+      }
       var newEv = {
         id: newUniqueEventId(name),
         name: name,
@@ -1865,6 +1914,12 @@
       var nameInp = document.getElementById("new-member-name");
       var name = nameInp.value.trim();
       if (!name) { nameInp.focus(); return; }
+      var dupe = state.members.find(function(m){ return normalizeName(m.name) === normalizeName(name); });
+      if (dupe) {
+        showToast('"' + dupe.name + '" is already in the family list');
+        slot.innerHTML = "";
+        return;
+      }
       var newM = { id: newUniqueMemberId(name), name: name };
       state.members.push(newM);
       state.events.forEach(function(ev){
