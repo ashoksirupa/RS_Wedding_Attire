@@ -1685,9 +1685,16 @@
 
   function clearEditSheet(){
     if (!sheetContext) return;
-    document.getElementById("sheet-input-style").value = "";
-    document.getElementById("sheet-input-color").value = "";
-    document.getElementById("sheet-input-jewelry").value = "";
+    var styleInp = document.getElementById("sheet-input-style");
+    var colorInp = document.getElementById("sheet-input-color");
+    var jewelryInp = document.getElementById("sheet-input-jewelry");
+    var hasData = styleInp.value || colorInp.value || jewelryInp.value;
+    if (hasData && !confirm("Clear the style, color, and jewelry entered here for this person and event?")) {
+      return;
+    }
+    styleInp.value = "";
+    colorInp.value = "";
+    jewelryInp.value = "";
   }
 
   function initEditSheet(){
