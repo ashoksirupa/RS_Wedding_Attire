@@ -372,6 +372,80 @@
     margin-top: 4px;
   }
 
+  /* ---------- TASKS TAB ---------- */
+  .select-input {
+    border: 1px solid rgba(43,32,24,0.12);
+    background: #fff;
+    border-radius: 9px;
+    padding: 9px 11px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .task-group { margin-bottom: 16px; }
+  .task-group-head {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    color: var(--ink);
+    padding: 0 4px 8px;
+    border-bottom: 2px solid var(--accent, var(--marigold));
+    margin-bottom: 8px;
+  }
+  .task-group-date { font-family: -apple-system, sans-serif; font-size: 11px; color: var(--ink-soft); font-weight: 600; }
+
+  .task-rows { display: flex; flex-direction: column; gap: 8px; padding: 0 16px; }
+  .task-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--card-bg);
+    border: 1px solid rgba(43,32,24,0.08);
+    border-left: 4px solid var(--accent, var(--marigold));
+    border-radius: 12px;
+    padding: 11px 12px;
+  }
+  .task-check {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(43,32,24,0.25);
+    background: #fff;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .task-check svg { width: 12px; height: 12px; }
+  .task-check.checked { background: #3d6b3f; border-color: #3d6b3f; }
+
+  .task-row-main { flex: 1; min-width: 0; }
+  .task-row-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .task-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .task-name-done { text-decoration: line-through; color: var(--ink-soft); font-weight: 500; }
+
+  .task-status-pill {
+    flex-shrink: 0;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    padding: 2px 7px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .task-status-not-started { background: rgba(184,172,156,0.22); color: var(--ink-soft); }
+  .task-status-in-progress { background: rgba(201,122,43,0.16); color: var(--marigold-deep); }
+  .task-status-done { background: rgba(61,107,63,0.15); color: #3d6b3f; }
+  .task-status-blocked { background: rgba(122,31,43,0.14); color: var(--maroon); }
+
+  .task-row-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; font-size: 11.5px; color: var(--ink-soft); }
+  .task-due { font-weight: 600; }
+  .task-due.overdue { color: var(--maroon); }
+  .task-resp::before { content: "· "; }
+  .task-vendor::before { content: "· "; }
+
   .event-actions {
     display: flex;
     justify-content: flex-end;
@@ -807,10 +881,59 @@
   </div>
 </div>
 
+<div class="sheet-backdrop" id="task-sheet-backdrop">
+  <div class="sheet" id="task-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <div>
+        <div class="sheet-person">Edit task</div>
+        <div class="sheet-event" id="task-sheet-subtitle"></div>
+      </div>
+      <button class="sheet-close-btn" id="task-sheet-close-btn">✕</button>
+    </div>
+    <div class="sheet-field">
+      <label>Task name</label>
+      <input type="text" id="task-input-name" placeholder="e.g. Book photographer" />
+    </div>
+    <div class="sheet-field">
+      <label>Event</label>
+      <select id="task-input-event" class="select-input"></select>
+    </div>
+    <div class="sheet-field">
+      <label>Status</label>
+      <select id="task-input-status" class="select-input"></select>
+    </div>
+    <div class="sheet-field">
+      <label>Due date</label>
+      <input type="date" id="task-input-due" />
+    </div>
+    <div class="sheet-field">
+      <label>Responsible</label>
+      <select id="task-input-responsible" class="select-input"></select>
+    </div>
+    <div class="sheet-field">
+      <label>Vendor</label>
+      <input type="text" id="task-input-vendor" placeholder="e.g. Radhika Photography" />
+    </div>
+    <div class="sheet-field">
+      <label>Comments</label>
+      <textarea class="event-notes" id="task-input-comments" rows="2" placeholder="Any notes…"></textarea>
+    </div>
+    <div class="sheet-actions">
+      <button class="sheet-btn sheet-btn-save" id="task-sheet-save-btn" style="flex:1;">Save</button>
+    </div>
+    <button class="disconnect-link" id="task-sheet-delete-btn" style="color:var(--maroon);">Delete this task</button>
+  </div>
+</div>
+
 <nav class="tab-bar" id="tab-bar" style="display:none;">
   <button class="tab-btn" data-tab="plan">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-3"/><rect x="9" y="1" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>
     <span class="tab-label">Plan</span>
+  </button>
+  <button class="tab-btn" data-tab="tasks">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    <span class="tab-label">Tasks</span>
   </button>
   <button class="tab-btn" data-tab="report">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
@@ -845,6 +968,9 @@
   ];
 
   var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  var TASK_STATUSES = ["Not Started", "In Progress", "Done", "Blocked"];
+  var NO_EVENT_ID = "__no_event__";
+  var UNASSIGNED_ID = "__unassigned__";
 
   var state = null; // { appTitle, appSubtitle, events: [...], members: [...], plans: { eventId: { memberId: {style,color,jewelry}, _notes: "" } }, openEvents: {} }
   var syncStatus = "idle"; // idle | saving | saved | error | offline
@@ -943,7 +1069,8 @@
       appSubtitle: "Wedding Attire & Jewelry Planner",
       events: DEFAULT_EVENTS.slice(),
       members: DEFAULT_MEMBERS.slice(),
-      outfits: []
+      outfits: [],
+      tasks: []
     };
   }
 
@@ -1016,12 +1143,29 @@
       }
     });
 
+    var tasks = (payload.tasks || []).map(function(t, idx){
+      var eid = t.event ? (eventNameToId[normalizeName(t.event)] || NO_EVENT_ID) : NO_EVENT_ID;
+      var rid = t.responsible ? (memberNameToId[normalizeName(t.responsible)] || UNASSIGNED_ID) : UNASSIGNED_ID;
+      var status = TASK_STATUSES.indexOf(t.status) !== -1 ? t.status : (t.status ? t.status : "Not Started");
+      return {
+        id: "task-" + idx,
+        eventId: eid,
+        name: t.name || "",
+        status: status,
+        dueDate: t.dueDate || "",
+        responsibleId: rid,
+        vendor: t.vendor || "",
+        comments: t.comments || ""
+      };
+    }).filter(function(t){ return t.name; });
+
     var builtState = {
       appTitle: payload.appTitle || "Rohit & Sivani",
       appSubtitle: payload.appSubtitle || "Wedding Attire & Jewelry Planner",
       events: events,
       members: members,
       plans: plans,
+      tasks: tasks,
       openEvents: {}
     };
     builtState._neededCleanupSave = neededCleanup;
@@ -1036,6 +1180,19 @@
         outfits.push({ event: ev.name, person: m.name, style: f.style || "", color: f.color || "", jewelry: f.jewelry || "" });
       });
     });
+    var eventIdToName = {}; state.events.forEach(function(ev){ eventIdToName[ev.id] = ev.name; });
+    var memberIdToName = {}; state.members.forEach(function(m){ memberIdToName[m.id] = m.name; });
+    var tasks = state.tasks.map(function(t){
+      return {
+        event: (t.eventId && t.eventId !== NO_EVENT_ID) ? (eventIdToName[t.eventId] || "") : "",
+        name: t.name || "",
+        status: t.status || "Not Started",
+        dueDate: t.dueDate || "",
+        responsible: (t.responsibleId && t.responsibleId !== UNASSIGNED_ID) ? (memberIdToName[t.responsibleId] || "") : "",
+        vendor: t.vendor || "",
+        comments: t.comments || ""
+      };
+    });
     return {
       appTitle: state.appTitle,
       appSubtitle: state.appSubtitle,
@@ -1043,7 +1200,8 @@
         return { name: ev.name, date: ev.date || "", notes: (state.plans[ev.id] && state.plans[ev.id]._notes) || "" };
       }),
       members: state.members.map(function(m){ return { name: m.name }; }),
-      outfits: outfits
+      outfits: outfits,
+      tasks: tasks
     };
   }
 
@@ -1148,7 +1306,7 @@
 
   // -------- Rendering --------
 
-  var currentTab = "plan"; // "plan" | "report"
+  var currentTab = "plan"; // "plan" | "tasks" | "report"
 
   function render(){
     document.getElementById("tab-bar").style.display = "flex";
@@ -1156,6 +1314,7 @@
       btn.classList.toggle("active", btn.getAttribute("data-tab") === currentTab);
     });
     if (currentTab === "plan") renderPlanTab();
+    else if (currentTab === "tasks") renderTasksTab();
     else renderReportTab();
     attachTabBarHandlers();
   }
@@ -1370,6 +1529,303 @@
   }
   function escapeAttr(str){ return escapeHtml(str); }
 
+  // -------- Tasks tab --------
+
+  function checkSvg(){
+    return '<svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  function isOverdue(t){
+    if (!t.dueDate || t.status === "Done") return false;
+    var d = parseDate(t.dueDate);
+    if (!d) return false;
+    var today = new Date(); today.setHours(0,0,0,0);
+    return d.getTime() < today.getTime();
+  }
+
+  function sortTasksByDue(tasks){
+    return tasks.slice().sort(function(a, b){
+      var da = a.dueDate ? new Date(a.dueDate + "T00:00:00").getTime() : null;
+      var db = b.dueDate ? new Date(b.dueDate + "T00:00:00").getTime() : null;
+      if (da === null && db === null) return 0;
+      if (da === null) return 1;
+      if (db === null) return -1;
+      return da - db;
+    });
+  }
+
+  function taskGroups(){
+    var groupsByEventId = {};
+    var sortedEvents = sortEventsByDate(state.events);
+    sortedEvents.forEach(function(ev){ groupsByEventId[ev.id] = { event: ev, tasks: [] }; });
+    var noEventGroup = { event: null, tasks: [] };
+
+    state.tasks.forEach(function(t){
+      if (t.eventId && t.eventId !== NO_EVENT_ID && groupsByEventId[t.eventId]) {
+        groupsByEventId[t.eventId].tasks.push(t);
+      } else {
+        noEventGroup.tasks.push(t);
+      }
+    });
+
+    var groups = [];
+    sortedEvents.forEach(function(ev){
+      if (groupsByEventId[ev.id].tasks.length) groups.push(groupsByEventId[ev.id]);
+    });
+    if (noEventGroup.tasks.length) groups.push(noEventGroup);
+    groups.forEach(function(g){ g.tasks = sortTasksByDue(g.tasks); });
+    return groups;
+  }
+
+  function taskStats(){
+    var total = state.tasks.length;
+    var done = state.tasks.filter(function(t){ return t.status === "Done"; }).length;
+    var overdue = state.tasks.filter(isOverdue).length;
+    return { total: total, done: done, overdue: overdue };
+  }
+
+  function nextTaskId(){
+    var max = -1;
+    state.tasks.forEach(function(t){
+      var n = parseInt(String(t.id).replace("task-", ""), 10);
+      if (!isNaN(n) && n > max) max = n;
+    });
+    return "task-" + (max + 1);
+  }
+
+  function renderTasksTab(){
+    var app = document.getElementById("app");
+    var stats = taskStats();
+    var html = "";
+    html += renderTasksHeader(stats);
+    html += renderAddTaskSection();
+    html += renderTasksList();
+    html += '<p class="footer-note">' + escapeHtml(state.appTitle) + '\'s wedding · task tracker<br/>Everything syncs through your Google Sheet.</p>';
+    app.innerHTML = html;
+    attachTasksHandlers();
+  }
+
+  function renderTasksHeader(stats){
+    return '' +
+    '<header>' +
+      '<div class="kicker-row">' +
+        '<p class="kicker">' + escapeHtml(state.appTitle) + '</p>' +
+        '<button class="rename-btn" id="rename-app-btn" aria-label="Rename">' + editPencilSvg() + '</button>' +
+      '</div>' +
+      '<h1 class="title display">Wedding Tasks</h1>' +
+      '<p class="subtitle">Track vendor bookings, to-dos, and deadlines for every function.</p>' +
+      renderSyncPill() +
+      '<div class="progress-row">' +
+        '<div class="progress-chip"><span class="num">' + stats.total + '</span><span class="lbl">Tasks</span></div>' +
+        '<div class="progress-chip"><span class="num">' + stats.done + '</span><span class="lbl">Done</span></div>' +
+        '<div class="progress-chip"><span class="num" style="' + (stats.overdue ? 'color:var(--maroon);' : '') + '">' + stats.overdue + '</span><span class="lbl">Overdue</span></div>' +
+      '</div>' +
+    '</header>';
+  }
+
+  function renderAddTaskSection(){
+    return '' +
+    '<div class="section-pad" style="margin-top:8px;">' +
+      '<div class="section-head"><h2>Tasks</h2><button class="add-link" id="toggle-add-task">+ Add task</button></div>' +
+    '</div>' +
+    '<div id="add-task-form-slot"></div>';
+  }
+
+  function renderTasksList(){
+    var groups = taskGroups();
+    if (!groups.length) {
+      return '<div class="empty-state">No tasks yet.<br/>Tap "+ Add task" to start tracking vendor bookings and to-dos.</div>';
+    }
+    var html = groups.map(function(g){
+      var accent = g.event ? COLORS[g.event.accentIdx % COLORS.length] : "#9a9a9a";
+      var heading = g.event
+        ? escapeHtml(g.event.name) + (g.event.date ? ' <span class="task-group-date">· ' + formatShortDate(g.event.date) + '</span>' : '')
+        : "General / No Event";
+      var rows = g.tasks.map(function(t){ return renderTaskRow(t, accent); }).join("");
+      return '<div class="task-group">' +
+        '<div class="task-group-head" style="--accent:' + accent + '">' + heading + '</div>' +
+        '<div class="task-rows">' + rows + '</div>' +
+      '</div>';
+    }).join("");
+    return '<div class="events-list" style="margin-top:4px;">' + html + '</div>';
+  }
+
+  function renderTaskRow(t, accent){
+    var overdue = isOverdue(t);
+    var member = state.members.find(function(m){ return m.id === t.responsibleId; });
+    var statusClass = "task-status-" + slugify(t.status);
+    return '' +
+    '<div class="task-row r-tappable" style="--accent:' + accent + '" data-open-task="' + t.id + '">' +
+      '<button class="task-check' + (t.status === "Done" ? " checked" : "") + '" data-toggle-task-done="' + t.id + '" aria-label="Toggle done">' + (t.status === "Done" ? checkSvg() : "") + '</button>' +
+      '<div class="task-row-main">' +
+        '<div class="task-row-top">' +
+          '<span class="task-name' + (t.status === "Done" ? " task-name-done" : "") + '">' + escapeHtml(t.name) + '</span>' +
+          '<span class="task-status-pill ' + statusClass + '">' + escapeHtml(t.status) + '</span>' +
+        '</div>' +
+        '<div class="task-row-meta">' +
+          (t.dueDate ? '<span class="task-due' + (overdue ? " overdue" : "") + '">' + (overdue ? "Overdue · " : "") + formatShortDate(t.dueDate) + '</span>' : "") +
+          (member ? '<span class="task-resp">' + escapeHtml(member.name) + '</span>' : "") +
+          (t.vendor ? '<span class="task-vendor">' + escapeHtml(t.vendor) + '</span>' : "") +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function taskEventOptionsHtml(selectedId){
+    var opts = '<option value="' + NO_EVENT_ID + '">No specific event</option>';
+    opts += sortEventsByDate(state.events).map(function(ev){
+      return '<option value="' + ev.id + '"' + (ev.id === selectedId ? " selected" : "") + '>' + escapeHtml(ev.name) + '</option>';
+    }).join("");
+    return opts;
+  }
+
+  function taskMemberOptionsHtml(selectedId){
+    var opts = '<option value="' + UNASSIGNED_ID + '">Unassigned</option>';
+    opts += state.members.map(function(m){
+      return '<option value="' + m.id + '"' + (m.id === selectedId ? " selected" : "") + '>' + escapeHtml(m.name) + '</option>';
+    }).join("");
+    return opts;
+  }
+
+  function toggleAddTaskForm(){
+    var slot = document.getElementById("add-task-form-slot");
+    if (slot.querySelector(".inline-form")) { slot.innerHTML = ""; return; }
+
+    slot.innerHTML = '' +
+    '<div class="inline-form">' +
+      '<div class="inline-form-row"><input type="text" id="new-task-name" placeholder="Task name (e.g. Book photographer)" /></div>' +
+      '<div class="inline-form-row"><select id="new-task-event" class="select-input">' + taskEventOptionsHtml(NO_EVENT_ID) + '</select></div>' +
+      '<div class="inline-form-row">' +
+        '<input type="date" id="new-task-due" />' +
+        '<select id="new-task-responsible" class="select-input">' + taskMemberOptionsHtml(UNASSIGNED_ID) + '</select>' +
+      '</div>' +
+      '<div class="form-buttons">' +
+        '<button class="btn btn-secondary" id="cancel-add-task">Cancel</button>' +
+        '<button class="btn btn-primary" id="confirm-add-task">Add task</button>' +
+      '</div>' +
+    '</div>';
+
+    document.getElementById("cancel-add-task").addEventListener("click", function(){ slot.innerHTML = ""; });
+    document.getElementById("confirm-add-task").addEventListener("click", function(){
+      var nameInp = document.getElementById("new-task-name");
+      var name = nameInp.value.trim();
+      if (!name) { nameInp.focus(); return; }
+      var newTask = {
+        id: nextTaskId(),
+        eventId: document.getElementById("new-task-event").value,
+        name: name,
+        status: "Not Started",
+        dueDate: document.getElementById("new-task-due").value || "",
+        responsibleId: document.getElementById("new-task-responsible").value,
+        vendor: "",
+        comments: ""
+      };
+      state.tasks.push(newTask);
+      scheduleSave();
+      slot.innerHTML = "";
+      render();
+      showToast('"' + name + '" added');
+    });
+    document.getElementById("new-task-name").focus();
+  }
+
+  function attachTasksHandlers(){
+    attachTitleRenameHandler();
+    attachSyncPillHandler();
+
+    var toggleBtn = document.getElementById("toggle-add-task");
+    if (toggleBtn) toggleBtn.addEventListener("click", toggleAddTaskForm);
+
+    document.querySelectorAll("[data-toggle-task-done]").forEach(function(btn){
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        var id = btn.getAttribute("data-toggle-task-done");
+        var t = state.tasks.find(function(x){ return x.id === id; });
+        if (!t) return;
+        t.status = (t.status === "Done") ? "Not Started" : "Done";
+        scheduleSave();
+        render();
+      });
+    });
+
+    document.querySelectorAll("[data-open-task]").forEach(function(el){
+      el.addEventListener("click", function(){
+        openTaskSheet(el.getAttribute("data-open-task"));
+      });
+    });
+  }
+
+  // -------- Task edit sheet --------
+
+  var taskSheetContext = null;
+
+  function openTaskSheet(taskId){
+    var t = state.tasks.find(function(x){ return x.id === taskId; });
+    if (!t) return;
+    taskSheetContext = taskId;
+
+    document.getElementById("task-input-name").value = t.name || "";
+    document.getElementById("task-input-event").innerHTML = taskEventOptionsHtml(t.eventId);
+    document.getElementById("task-input-status").innerHTML = TASK_STATUSES.map(function(s){
+      return '<option value="' + escapeAttr(s) + '"' + (s === t.status ? " selected" : "") + '>' + escapeHtml(s) + '</option>';
+    }).join("");
+    document.getElementById("task-input-due").value = t.dueDate || "";
+    document.getElementById("task-input-responsible").innerHTML = taskMemberOptionsHtml(t.responsibleId);
+    document.getElementById("task-input-vendor").value = t.vendor || "";
+    document.getElementById("task-input-comments").value = t.comments || "";
+
+    var ev = state.events.find(function(x){ return x.id === t.eventId; });
+    document.getElementById("task-sheet-subtitle").textContent = ev ? ev.name : "No specific event";
+
+    document.getElementById("task-sheet-backdrop").classList.add("show");
+  }
+
+  function closeTaskSheet(){
+    document.getElementById("task-sheet-backdrop").classList.remove("show");
+    taskSheetContext = null;
+  }
+
+  function saveTaskSheet(){
+    if (!taskSheetContext) return;
+    var t = state.tasks.find(function(x){ return x.id === taskSheetContext; });
+    if (!t) return;
+    var nameInp = document.getElementById("task-input-name");
+    var name = nameInp.value.trim();
+    if (!name) { nameInp.focus(); return; }
+    t.name = name;
+    t.eventId = document.getElementById("task-input-event").value;
+    t.status = document.getElementById("task-input-status").value;
+    t.dueDate = document.getElementById("task-input-due").value || "";
+    t.responsibleId = document.getElementById("task-input-responsible").value;
+    t.vendor = document.getElementById("task-input-vendor").value.trim();
+    t.comments = document.getElementById("task-input-comments").value.trim();
+    scheduleSave();
+    closeTaskSheet();
+    render();
+    showToast("Task saved");
+  }
+
+  function deleteTaskSheet(){
+    if (!taskSheetContext) return;
+    var t = state.tasks.find(function(x){ return x.id === taskSheetContext; });
+    if (!t) return;
+    if (!confirm('Delete task "' + t.name + '"? This can\'t be undone.')) return;
+    state.tasks = state.tasks.filter(function(x){ return x.id !== taskSheetContext; });
+    scheduleSave();
+    closeTaskSheet();
+    render();
+    showToast("Task deleted");
+  }
+
+  function initTaskSheet(){
+    document.getElementById("task-sheet-close-btn").addEventListener("click", closeTaskSheet);
+    document.getElementById("task-sheet-backdrop").addEventListener("click", function(e){
+      if (e.target.id === "task-sheet-backdrop") closeTaskSheet();
+    });
+    document.getElementById("task-sheet-save-btn").addEventListener("click", saveTaskSheet);
+    document.getElementById("task-sheet-delete-btn").addEventListener("click", deleteTaskSheet);
+  }
+
   // -------- Report tab: state --------
 
   var reportFilters = { members: null, events: null }; // null = all selected
@@ -1414,6 +1870,24 @@
 
   // -------- Report tab: rendering --------
 
+  var reportMode = "attire"; // "attire" | "tasks"
+
+  function renderReportModeToggle(){
+    return '<div class="view-toggle" style="padding-top:16px;">' +
+      '<button class="view-btn' + (reportMode === "attire" ? " active" : "") + '" data-report-mode="attire">Attire Report</button>' +
+      '<button class="view-btn' + (reportMode === "tasks" ? " active" : "") + '" data-report-mode="tasks">Task Report</button>' +
+    '</div>';
+  }
+
+  function attachReportModeToggleHandlers(){
+    document.querySelectorAll("[data-report-mode]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        reportMode = btn.getAttribute("data-report-mode");
+        render();
+      });
+    });
+  }
+
   function renderReportTab(){
     var app = document.getElementById("app");
 
@@ -1425,8 +1899,16 @@
       return;
     }
 
+    var html = renderReportModeToggle();
+
+    if (reportMode === "tasks") {
+      html += renderTaskReport();
+      app.innerHTML = html;
+      attachTaskReportHandlers();
+      return;
+    }
+
     var stats = reportStats();
-    var html = "";
     html += renderReportHeader(stats);
     html += renderReportFilters();
     html += renderReportViewToggle();
@@ -1593,9 +2075,170 @@
     return '<div><span class="list-field-label">' + label + '</span><span class="list-field-value">' + (value ? escapeHtml(value) : '<span class="cell-empty">—</span>') + '</span></div>';
   }
 
+  // -------- Task Report --------
+
+  var taskReportFilters = { events: null, statuses: null, members: null }; // null = all selected
+
+  function taskReportAllEventFilterIds(){
+    var ids = state.events.map(function(e){ return e.id; });
+    if (state.tasks.some(function(t){ return t.eventId === NO_EVENT_ID; })) ids.push(NO_EVENT_ID);
+    return ids;
+  }
+
+  function taskReportFilteredTasks(){
+    return state.tasks.filter(function(t){
+      var eventOk = !taskReportFilters.events || taskReportFilters.events.indexOf(t.eventId) !== -1;
+      var statusOk = !taskReportFilters.statuses || taskReportFilters.statuses.indexOf(t.status) !== -1;
+      var memberOk = !taskReportFilters.members || taskReportFilters.members.indexOf(t.responsibleId) !== -1;
+      return eventOk && statusOk && memberOk;
+    });
+  }
+
+  function taskReportStats(filtered){
+    return {
+      count: filtered.length,
+      done: filtered.filter(function(t){ return t.status === "Done"; }).length,
+      overdue: filtered.filter(isOverdue).length
+    };
+  }
+
+  function renderTaskReportHeader(stats){
+    return '' +
+    '<header>' +
+      '<div class="kicker-row">' +
+        '<p class="kicker">' + escapeHtml(state.appTitle) + '</p>' +
+        '<button class="rename-btn" id="rename-app-btn" aria-label="Rename">' + editPencilSvg() + '</button>' +
+      '</div>' +
+      '<h1 class="title display">Task Report</h1>' +
+      '<p class="subtitle">Showing ' + stats.count + ' of ' + state.tasks.length + ' tasks</p>' +
+      renderSyncPill() +
+      '<p class="print-meta print-only">Generated ' + formatToday() + '</p>' +
+      '<div class="stat-row">' +
+        '<div class="stat"><span class="n">' + stats.count + '</span><span class="l">Shown</span></div>' +
+        '<div class="stat"><span class="n">' + stats.done + '</span><span class="l">Done</span></div>' +
+        '<div class="stat"><span class="n" style="' + (stats.overdue ? "color:var(--maroon);" : "") + '">' + stats.overdue + '</span><span class="l">Overdue</span></div>' +
+      '</div>' +
+    '</header>';
+  }
+
+  function renderTaskReportFilters(){
+    var eventChips = sortEventsByDate(state.events).map(function(ev){
+      var active = !taskReportFilters.events || taskReportFilters.events.indexOf(ev.id) !== -1;
+      var color = COLORS[ev.accentIdx % COLORS.length];
+      return '<div class="chip' + (active ? " active" : "") + '" style="--rchip:' + color + '" data-tr-toggle-event="' + ev.id + '">' + escapeHtml(ev.name) + '</div>';
+    }).join("");
+    if (state.tasks.some(function(t){ return t.eventId === NO_EVENT_ID; })) {
+      var noEvActive = !taskReportFilters.events || taskReportFilters.events.indexOf(NO_EVENT_ID) !== -1;
+      eventChips += '<div class="chip' + (noEvActive ? " active" : "") + '" style="--rchip:#9a9a9a" data-tr-toggle-event="' + NO_EVENT_ID + '">No Event</div>';
+    }
+
+    var statusChips = TASK_STATUSES.map(function(s){
+      var active = !taskReportFilters.statuses || taskReportFilters.statuses.indexOf(s) !== -1;
+      return '<div class="chip' + (active ? " active" : "") + '" style="--rchip:#1F5D5B" data-tr-toggle-status="' + escapeAttr(s) + '">' + escapeHtml(s) + '</div>';
+    }).join("");
+
+    var memberChips = state.members.map(function(m, idx){
+      var active = !taskReportFilters.members || taskReportFilters.members.indexOf(m.id) !== -1;
+      var color = COLORS[idx % COLORS.length];
+      return '<div class="chip' + (active ? " active" : "") + '" style="--rchip:' + color + '" data-tr-toggle-member="' + m.id + '">' + escapeHtml(m.name) + '</div>';
+    }).join("");
+
+    return '' +
+    '<div class="filters">' +
+      '<div class="filter-group"><div class="filter-label"><span>Events</span><button data-tr-reset="events">Select all</button></div><div class="chip-row">' + eventChips + '</div></div>' +
+      '<div class="filter-group"><div class="filter-label"><span>Status</span><button data-tr-reset="statuses">Select all</button></div><div class="chip-row">' + statusChips + '</div></div>' +
+      '<div class="filter-group"><div class="filter-label"><span>Responsible</span><button data-tr-reset="members">Select all</button></div><div class="chip-row">' + memberChips + '</div></div>' +
+    '</div>';
+  }
+
+  function renderTaskReportTable(filtered){
+    if (!filtered.length) return '<div class="empty-state">No tasks match this filter.</div>';
+    var sorted = sortTasksByDue(filtered);
+    var rows = sorted.map(function(t){
+      var ev = state.events.find(function(x){ return x.id === t.eventId; });
+      var member = state.members.find(function(x){ return x.id === t.responsibleId; });
+      var overdue = isOverdue(t);
+      var statusClass = "task-status-" + slugify(t.status);
+      return '<tr>' +
+        '<td>' + (ev ? escapeHtml(ev.name) : '<span class="cell-empty">No event</span>') + '</td>' +
+        '<td class="cell-style">' + escapeHtml(t.name) + '</td>' +
+        '<td><span class="task-status-pill ' + statusClass + '">' + escapeHtml(t.status) + '</span></td>' +
+        '<td' + (overdue ? ' style="color:var(--maroon);font-weight:700;"' : '') + '>' + (t.dueDate ? formatShortDate(t.dueDate) : "—") + '</td>' +
+        '<td>' + (member ? escapeHtml(member.name) : '<span class="cell-empty">Unassigned</span>') + '</td>' +
+        '<td>' + (t.vendor ? escapeHtml(t.vendor) : "—") + '</td>' +
+        '<td class="cell-jewelry">' + (t.comments ? escapeHtml(t.comments) : "—") + '</td>' +
+      '</tr>';
+    }).join("");
+    var head = '<tr><th>Event</th><th>Task</th><th>Status</th><th>Due</th><th>Responsible</th><th>Vendor</th><th>Comments</th></tr>';
+    return '<div class="table-wrap"><table class="report-table"><thead>' + head + '</thead><tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function renderTaskReport(){
+    var filtered = taskReportFilteredTasks();
+    var stats = taskReportStats(filtered);
+    var html = "";
+    html += renderTaskReportHeader(stats);
+    html += renderTaskReportFilters();
+    html += '<div class="export-row"><button class="export-btn" id="export-pdf-btn">' + exportIconSvg() + '<span>Export as PDF</span></button></div>';
+    html += renderTaskReportTable(filtered);
+    html += '<p class="footer-note">' + escapeHtml(state.appTitle) + '\'s wedding · task report<br/>Reflects everything saved in the Tasks tab.</p>';
+    return html;
+  }
+
+  function attachTaskReportHandlers(){
+    attachTitleRenameHandler();
+    attachSyncPillHandler();
+    attachReportModeToggleHandlers();
+
+    var exportBtn = document.getElementById("export-pdf-btn");
+    if (exportBtn) exportBtn.addEventListener("click", function(){ window.print(); });
+
+    document.querySelectorAll("[data-tr-toggle-event]").forEach(function(chip){
+      chip.addEventListener("click", function(){
+        var id = chip.getAttribute("data-tr-toggle-event");
+        var allIds = taskReportAllEventFilterIds();
+        if (!taskReportFilters.events) taskReportFilters.events = allIds.slice();
+        var idx = taskReportFilters.events.indexOf(id);
+        if (idx === -1) taskReportFilters.events.push(id); else taskReportFilters.events.splice(idx, 1);
+        if (taskReportFilters.events.length === allIds.length) taskReportFilters.events = null;
+        render();
+      });
+    });
+
+    document.querySelectorAll("[data-tr-toggle-status]").forEach(function(chip){
+      chip.addEventListener("click", function(){
+        var s = chip.getAttribute("data-tr-toggle-status");
+        if (!taskReportFilters.statuses) taskReportFilters.statuses = TASK_STATUSES.slice();
+        var idx = taskReportFilters.statuses.indexOf(s);
+        if (idx === -1) taskReportFilters.statuses.push(s); else taskReportFilters.statuses.splice(idx, 1);
+        if (taskReportFilters.statuses.length === TASK_STATUSES.length) taskReportFilters.statuses = null;
+        render();
+      });
+    });
+
+    document.querySelectorAll("[data-tr-toggle-member]").forEach(function(chip){
+      chip.addEventListener("click", function(){
+        var id = chip.getAttribute("data-tr-toggle-member");
+        if (!taskReportFilters.members) taskReportFilters.members = state.members.map(function(m){ return m.id; });
+        var idx = taskReportFilters.members.indexOf(id);
+        if (idx === -1) taskReportFilters.members.push(id); else taskReportFilters.members.splice(idx, 1);
+        if (taskReportFilters.members.length === state.members.length) taskReportFilters.members = null;
+        render();
+      });
+    });
+
+    document.querySelectorAll("[data-tr-reset]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        taskReportFilters[btn.getAttribute("data-tr-reset")] = null;
+        render();
+      });
+    });
+  }
+
   function attachReportHandlers(){
     attachTitleRenameHandler();
     attachSyncPillHandler();
+    attachReportModeToggleHandlers();
 
     var exportBtn = document.getElementById("export-pdf-btn");
     if (exportBtn) {
@@ -1982,6 +2625,7 @@
   async function boot(){
     initEditSheet();
     initRenameSheet();
+    initTaskSheet();
 
     if (!getSyncUrl()) {
       renderSetupScreen();
