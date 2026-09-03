@@ -1873,7 +1873,7 @@
   var reportMode = "attire"; // "attire" | "tasks"
 
   function renderReportModeToggle(){
-    return '<div class="view-toggle" style="padding-top:16px;">' +
+    return '<div class="view-toggle">' +
       '<button class="view-btn' + (reportMode === "attire" ? " active" : "") + '" data-report-mode="attire">Attire Report</button>' +
       '<button class="view-btn' + (reportMode === "tasks" ? " active" : "") + '" data-report-mode="tasks">Task Report</button>' +
     '</div>';
@@ -1899,17 +1899,19 @@
       return;
     }
 
-    var html = renderReportModeToggle();
-
     if (reportMode === "tasks") {
-      html += renderTaskReport();
-      app.innerHTML = html;
+      var taskHtml = renderTaskReportHeader(taskReportStats(taskReportFilteredTasks()));
+      taskHtml += renderReportModeToggle();
+      taskHtml += renderTaskReportBody();
+      app.innerHTML = taskHtml;
       attachTaskReportHandlers();
       return;
     }
 
     var stats = reportStats();
+    var html = "";
     html += renderReportHeader(stats);
+    html += renderReportModeToggle();
     html += renderReportFilters();
     html += renderReportViewToggle();
     html += (reportViewMode === "grid") ? renderReportGrid() : renderReportList();
@@ -2173,11 +2175,9 @@
     return '<div class="table-wrap"><table class="report-table"><thead>' + head + '</thead><tbody>' + rows + '</tbody></table></div>';
   }
 
-  function renderTaskReport(){
+  function renderTaskReportBody(){
     var filtered = taskReportFilteredTasks();
-    var stats = taskReportStats(filtered);
     var html = "";
-    html += renderTaskReportHeader(stats);
     html += renderTaskReportFilters();
     html += '<div class="export-row"><button class="export-btn" id="export-pdf-btn">' + exportIconSvg() + '<span>Export as PDF</span></button></div>';
     html += renderTaskReportTable(filtered);
