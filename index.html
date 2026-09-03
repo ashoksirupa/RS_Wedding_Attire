@@ -386,16 +386,39 @@
     appearance: none;
   }
 
-  .task-group { margin-bottom: 16px; }
+  .task-group { margin-bottom: 12px; }
   .task-group-head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: none;
+    border: none;
     font-family: Georgia, serif;
     font-size: 14px;
     color: var(--ink);
-    padding: 0 4px 8px;
+    padding: 0 16px 8px;
     border-bottom: 2px solid var(--accent, var(--marigold));
     margin-bottom: 8px;
+    text-align: left;
+  }
+  .task-group-heading { display: flex; align-items: baseline; gap: 6px; }
+  .task-group-count {
+    font-family: -apple-system, sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    background: var(--cream-2);
+    border-radius: 8px;
+    padding: 1px 6px;
   }
   .task-group-date { font-family: -apple-system, sans-serif; font-size: 11px; color: var(--ink-soft); font-weight: 600; }
+  .task-group-chevron { width: 16px; height: 16px; color: var(--ink-soft); flex-shrink: 0; transition: transform .25s ease; }
+  .task-group.open .task-group-chevron { transform: rotate(180deg); }
+
+  .task-group-body { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+  .task-group.open .task-group-body { max-height: 4000px; }
 
   .task-rows { display: flex; flex-direction: column; gap: 8px; padding: 0 16px; }
   .task-row {
@@ -1166,7 +1189,8 @@
       members: members,
       plans: plans,
       tasks: tasks,
-      openEvents: {}
+      openEvents: {},
+      openTaskGroups: {}
     };
     builtState._neededCleanupSave = neededCleanup;
     return builtState;
@@ -1623,10 +1647,26 @@
     '</header>';
   }
 
+  function taskGroupKey(g){
+    return g.event ? g.event.id : NO_EVENT_ID;
+  }
+
+  function isTaskGroupOpen(key){
+    return state.openTaskGroups[key] !== false; // default expanded
+  }
+
   function renderAddTaskSection(){
+    var groups = taskGroups();
+    var collapseToggle = "";
+    if (groups.length > 1) {
+      var allCollapsed = groups.every(function(g){ return !isTaskGroupOpen(taskGroupKey(g)); });
+      collapseToggle = '<button class="add-link" id="toggle-collapse-all-tasks" style="margin-left:14px;">' + (allCollapsed ? "Expand all" : "Collapse all") + '</button>';
+    }
     return '' +
     '<div class="section-pad" style="margin-top:8px;">' +
-      '<div class="section-head"><h2>Tasks</h2><button class="add-link" id="toggle-add-task">+ Add task</button></div>' +
+      '<div class="section-head"><h2>Tasks</h2><span>' +
+        '<button class="add-link" id="toggle-add-task">+ Add task</button>' + collapseToggle +
+      '</span></div>' +
     '</div>' +
     '<div id="add-task-form-slot"></div>';
   }
@@ -1637,14 +1677,20 @@
       return '<div class="empty-state">No tasks yet.<br/>Tap "+ Add task" to start tracking vendor bookings and to-dos.</div>';
     }
     var html = groups.map(function(g){
+      var key = taskGroupKey(g);
+      var open = isTaskGroupOpen(key);
       var accent = g.event ? COLORS[g.event.accentIdx % COLORS.length] : "#9a9a9a";
       var heading = g.event
         ? escapeHtml(g.event.name) + (g.event.date ? ' <span class="task-group-date">· ' + formatShortDate(g.event.date) + '</span>' : '')
         : "General / No Event";
+      var countBadge = '<span class="task-group-count">' + g.tasks.length + '</span>';
       var rows = g.tasks.map(function(t){ return renderTaskRow(t, accent); }).join("");
-      return '<div class="task-group">' +
-        '<div class="task-group-head" style="--accent:' + accent + '">' + heading + '</div>' +
-        '<div class="task-rows">' + rows + '</div>' +
+      return '<div class="task-group' + (open ? " open" : "") + '">' +
+        '<button class="task-group-head" style="--accent:' + accent + '" data-toggle-task-group="' + key + '">' +
+          '<span class="task-group-heading">' + heading + countBadge + '</span>' +
+          '<svg class="chevron task-group-chevron" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</button>' +
+        '<div class="task-group-body"><div class="task-rows">' + rows + '</div></div>' +
       '</div>';
     }).join("");
     return '<div class="events-list" style="margin-top:4px;">' + html + '</div>';
@@ -1735,6 +1781,24 @@
 
     var toggleBtn = document.getElementById("toggle-add-task");
     if (toggleBtn) toggleBtn.addEventListener("click", toggleAddTaskForm);
+
+    var collapseAllBtn = document.getElementById("toggle-collapse-all-tasks");
+    if (collapseAllBtn) {
+      collapseAllBtn.addEventListener("click", function(){
+        var groups = taskGroups();
+        var allCollapsed = groups.every(function(g){ return !isTaskGroupOpen(taskGroupKey(g)); });
+        groups.forEach(function(g){ state.openTaskGroups[taskGroupKey(g)] = allCollapsed; });
+        render();
+      });
+    }
+
+    document.querySelectorAll("[data-toggle-task-group]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var key = btn.getAttribute("data-toggle-task-group");
+        state.openTaskGroups[key] = !isTaskGroupOpen(key);
+        render();
+      });
+    });
 
     document.querySelectorAll("[data-toggle-task-done]").forEach(function(btn){
       btn.addEventListener("click", function(e){
