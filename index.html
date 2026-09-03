@@ -994,6 +994,7 @@
   var TASK_STATUSES = ["Not Started", "In Progress", "Done", "Blocked"];
   var NO_EVENT_ID = "__no_event__";
   var UNASSIGNED_ID = "__unassigned__";
+  var NO_VENDOR_KEY = "__no_vendor__";
 
   var state = null; // { appTitle, appSubtitle, events: [...], members: [...], plans: { eventId: { memberId: {style,color,jewelry}, _notes: "" } }, openEvents: {} }
   var syncStatus = "idle"; // idle | saving | saved | error | offline
@@ -2143,7 +2144,7 @@
 
   // -------- Task Report --------
 
-  var taskReportFilters = { events: null, statuses: null, members: null }; // null = all selected
+  var taskReportFilters = { events: null, statuses: null, members: null, vendors: null }; // null = all selected
 
   function taskReportAllEventFilterIds(){
     var ids = state.events.map(function(e){ return e.id; });
@@ -2151,12 +2152,39 @@
     return ids;
   }
 
+  function distinctVendors(){
+    var seen = {};
+    var out = [];
+    state.tasks.forEach(function(t){
+      var v = (t.vendor || "").trim();
+      if (!v) return;
+      var key = normalizeName(v);
+      if (seen[key]) return;
+      seen[key] = true;
+      out.push(v);
+    });
+    out.sort(function(a, b){ return a.localeCompare(b); });
+    return out;
+  }
+
+  function taskVendorKey(t){
+    var v = (t.vendor || "").trim();
+    return v ? normalizeName(v) : NO_VENDOR_KEY;
+  }
+
+  function taskReportAllVendorKeys(){
+    var keys = distinctVendors().map(function(v){ return normalizeName(v); });
+    if (state.tasks.some(function(t){ return !(t.vendor || "").trim(); })) keys.push(NO_VENDOR_KEY);
+    return keys;
+  }
+
   function taskReportFilteredTasks(){
     return state.tasks.filter(function(t){
       var eventOk = !taskReportFilters.events || taskReportFilters.events.indexOf(t.eventId) !== -1;
       var statusOk = !taskReportFilters.statuses || taskReportFilters.statuses.indexOf(t.status) !== -1;
       var memberOk = !taskReportFilters.members || taskReportFilters.members.indexOf(t.responsibleId) !== -1;
-      return eventOk && statusOk && memberOk;
+      var vendorOk = !taskReportFilters.vendors || taskReportFilters.vendors.indexOf(taskVendorKey(t)) !== -1;
+      return eventOk && statusOk && memberOk && vendorOk;
     });
   }
 
@@ -2209,11 +2237,27 @@
       return '<div class="chip' + (active ? " active" : "") + '" style="--rchip:' + color + '" data-tr-toggle-member="' + m.id + '">' + escapeHtml(m.name) + '</div>';
     }).join("");
 
+    var vendorList = distinctVendors();
+    var vendorGroupHtml = "";
+    if (vendorList.length) {
+      var vendorChips = vendorList.map(function(v){
+        var key = normalizeName(v);
+        var active = !taskReportFilters.vendors || taskReportFilters.vendors.indexOf(key) !== -1;
+        return '<div class="chip' + (active ? " active" : "") + '" style="--rchip:#7A1F2B" data-tr-toggle-vendor="' + escapeAttr(key) + '">' + escapeHtml(v) + '</div>';
+      }).join("");
+      if (state.tasks.some(function(t){ return !(t.vendor || "").trim(); })) {
+        var noVendActive = !taskReportFilters.vendors || taskReportFilters.vendors.indexOf(NO_VENDOR_KEY) !== -1;
+        vendorChips += '<div class="chip' + (noVendActive ? " active" : "") + '" style="--rchip:#9a9a9a" data-tr-toggle-vendor="' + NO_VENDOR_KEY + '">No Vendor</div>';
+      }
+      vendorGroupHtml = '<div class="filter-group"><div class="filter-label"><span>Vendor</span><button data-tr-reset="vendors">Select all</button></div><div class="chip-row">' + vendorChips + '</div></div>';
+    }
+
     return '' +
     '<div class="filters">' +
       '<div class="filter-group"><div class="filter-label"><span>Events</span><button data-tr-reset="events">Select all</button></div><div class="chip-row">' + eventChips + '</div></div>' +
       '<div class="filter-group"><div class="filter-label"><span>Status</span><button data-tr-reset="statuses">Select all</button></div><div class="chip-row">' + statusChips + '</div></div>' +
       '<div class="filter-group"><div class="filter-label"><span>Responsible</span><button data-tr-reset="members">Select all</button></div><div class="chip-row">' + memberChips + '</div></div>' +
+      vendorGroupHtml +
     '</div>';
   }
 
@@ -2287,6 +2331,18 @@
         var idx = taskReportFilters.members.indexOf(id);
         if (idx === -1) taskReportFilters.members.push(id); else taskReportFilters.members.splice(idx, 1);
         if (taskReportFilters.members.length === state.members.length) taskReportFilters.members = null;
+        render();
+      });
+    });
+
+    document.querySelectorAll("[data-tr-toggle-vendor]").forEach(function(chip){
+      chip.addEventListener("click", function(){
+        var key = chip.getAttribute("data-tr-toggle-vendor");
+        var allKeys = taskReportAllVendorKeys();
+        if (!taskReportFilters.vendors) taskReportFilters.vendors = allKeys.slice();
+        var idx = taskReportFilters.vendors.indexOf(key);
+        if (idx === -1) taskReportFilters.vendors.push(key); else taskReportFilters.vendors.splice(idx, 1);
+        if (taskReportFilters.vendors.length === allKeys.length) taskReportFilters.vendors = null;
         render();
       });
     });
